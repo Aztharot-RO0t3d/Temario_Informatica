@@ -16,13 +16,36 @@
   --content-max:900px;
   --gap:24px;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.75;display:flex;min-height:100vh;overflow-x:hidden}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0
+}
+html{
+  scroll-behavior:smooth
+}
+body{
+  font-family:'Sora',sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  font-size:14px;
+  line-height:1.75;
+  display:flex;
+  min-height:100vh;
+  overflow-x:hidden
+}
 
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--surf4);border-radius:3px}
+::-webkit-scrollbar{
+  width:5px;
+  height:5px
+}
+::-webkit-scrollbar-track{
+  background:transparent
+}
+::-webkit-scrollbar-thumb{
+  background:var(--surf4);
+  border-radius:3px
+}
 
 #sb{
   width:var(--sb);min-width:var(--sb);
@@ -765,7 +788,7 @@ pre code{
 <nav id="sb">
   <div id="sb-head">
     <h1>Temario · Informática</h1>
-    <p>Desde cero hasta hacking ético</p>
+    <p>Desde cero</p>
   </div>
   <div id="sb-search"><input type="text" id="sb-input" placeholder="Buscar tema..." oninput="filterSidebar(this.value)"></div>
   <div id="sb-nav"></div>
@@ -808,7 +831,7 @@ const BLOQUES = [
           'Efecto Dunning-Kruger en tecnología: la "meseta de desesperación" es normal',
           'Cuándo pedir ayuda: luchar 20 minutos antes de preguntar, explicar qué intentaste',
           'Usar IA correctamente: como tutor socrático, no como copiadora de soluciones',
-          'Rubber duck debugging: explicar el problema en voz alta a un objeto — funciona de verdad',
+          'Rubber duck debugging: explicar el problema en voz alta a un objeto, si,funciona de verdad no estoy loco',
           'El repositorio de aprendizaje: un repo en GitHub con todos los ejercicios organizados'
         ],
         practica:[
@@ -2568,7 +2591,6 @@ print(f"Login legítimo: {resultado3}") # (1, 'admin', 'secreto123')`
 }
 ];
 
-// ─── RENDER ─────────────────────────────────────────────────────────────────
 function buildSidebar() {
   const nav = document.getElementById('sb-nav');
   BLOQUES.forEach((b, bi) => {
@@ -2697,7 +2719,6 @@ function buildContent() {
   });
 }
 
-// ─── HELPERS ────────────────────────────────────────────────────────────────
 function topicId(title) {
   return 'topic-' + title.slice(0, 30).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
 }
@@ -2743,20 +2764,81 @@ function copyCode(btn) {
 }
 
 function filterSidebar(q) {
-  const lq = q.toLowerCase();
-  document.querySelectorAll('.sb-item').forEach(el => {
-    const match = !q || el.textContent.toLowerCase().includes(lq);
-    el.style.display = match ? '' : 'none';
-    if (match && q) {
-      el.closest('.sb-bloque').classList.remove('closed');
+  const lq = q.trim().toLowerCase();
+
+  document.querySelectorAll('.sb-bloque').forEach(block => {
+
+    const blockTitle =
+      block.querySelector('.sb-bloque-title')
+      ?.textContent
+      .toLowerCase() || '';
+
+    let blockHasMatch =
+      !lq || blockTitle.includes(lq);
+
+    const sections =
+      block.querySelectorAll('.sb-sec-label');
+
+    sections.forEach(label => {
+
+      const sectionTitle =
+        label.textContent.toLowerCase();
+
+      let sectionHasMatch =
+        !lq || sectionTitle.includes(lq);
+
+      let next = label.nextElementSibling;
+
+      while (
+        next &&
+        !next.classList.contains('sb-sec-label')
+      ) {
+
+        if (next.classList.contains('sb-item')) {
+
+          const href =
+            next.getAttribute('href');
+
+          const topic =
+            document.querySelector(href);
+
+          const searchable = [
+            blockTitle,
+            sectionTitle,
+            next.textContent,
+            topic?.textContent || ''
+          ]
+          .join(' ')
+          .toLowerCase();
+
+          const match =
+            !lq || searchable.includes(lq);
+
+          next.style.display =
+            match ? '' : 'none';
+
+          if (match) {
+            sectionHasMatch = true;
+            blockHasMatch = true;
+          }
+        }
+
+        next = next.nextElementSibling;
+      }
+
+      label.style.display =
+        sectionHasMatch ? '' : 'none';
+    });
+
+    block.style.display =
+      blockHasMatch ? '' : 'none';
+
+    if (lq && blockHasMatch) {
+      block.classList.remove('closed');
     }
-  });
-  document.querySelectorAll('.sb-sec-label').forEach(el => {
-    el.style.display = q ? 'none' : '';
   });
 }
 
-// ─── INTERSECCIÓN: resaltar elemento activo en sidebar ──────────────────────
 function setupObserver() {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -2772,7 +2854,6 @@ function setupObserver() {
   document.querySelectorAll('.topic').forEach(el => observer.observe(el));
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
 buildSidebar();
 buildTOC();
 buildContent();
