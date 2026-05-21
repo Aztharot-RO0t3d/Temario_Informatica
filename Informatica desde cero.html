@@ -1,0 +1,2782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temario de Informática</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Sora:wght@300;400;500;600&display=swap');
+:root{
+  --bg:#0d0d12;--surf1:#13131a;--surf2:#1a1a24;--surf3:#22222f;--surf4:#2a2a3a;
+  --bd:#2e2e42;--bd2:#3a3a50;
+  --txt:#e8e8f2;--txt2:#b0b0cc;--txt3:#7878a0;
+  --a0:#8b7ff7;--a1:#56d4b2;--a2:#f47c6e;--a3:#6ab8f5;--a4:#e07be0;--a5:#f5cc45;--a6:#82dd95;--a7:#f5a348;
+  --code-bg:#0a0a10;--code-bd:#252535;
+  --sb:260px;
+  --content-max:900px;
+  --gap:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.75;display:flex;min-height:100vh;overflow-x:hidden}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surf4);border-radius:3px}
+
+#sb{
+  width:var(--sb);min-width:var(--sb);
+  background:var(--surf1);
+  border-right:1px solid var(--bd);
+  position:fixed;top:0;left:0;
+  height:100vh;overflow-y:auto;
+  z-index:200;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+#sb-head{
+  padding:20px 18px 14px;
+  border-bottom:1px solid var(--bd)
+}
+#sb-head h1{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+  color:var(--a0);
+  letter-spacing:.1em;
+  text-transform:uppercase
+}
+#sb-head p{
+  font-size:11px;
+  color:var(--txt3);
+  margin-top:3px
+}
+#sb-search{
+  padding:10px 14px;
+  border-bottom:1px solid var(--bd)
+}
+#sb-search input{
+  width:100%;background:var(--surf2);
+  border:1px solid var(--bd);
+  border-radius:6px;
+  padding:6px 10px;
+  color:var(--txt2);
+  font-size:12px;
+  font-family:'Sora',sans-serif;
+  outline:none
+}
+#sb-search input::placeholder{
+  color:var(--txt3)
+}
+#sb-search input:focus{
+  border-color:var(--a0)
+}
+.sb-bloque{
+  border-bottom:1px solid var(--bd);
+  padding:6px 0
+}
+.sb-bloque-hdr{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 14px;
+  cursor:pointer;
+  user-select:none;
+  transition:background .15s;
+  border-radius:4px;
+  margin:2px 6px
+}
+.sb-bloque-hdr:hover{
+  background:var(--surf2)
+}
+.sb-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  flex-shrink:0
+}
+.sb-bloque-title{
+  flex:1;
+  font-size:11.5px;
+  font-weight:500;
+  color:var(--txt)
+}
+.sb-bloque-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:var(--txt3);
+  background:var(--surf3);
+  padding:2px 6px;
+  border-radius:3px
+}
+.sb-chevron{
+  font-size:10px;
+  color:var(--txt3);
+  transition:transform .2s;
+  flex-shrink:0
+}
+.sb-bloque.closed .sb-chevron{
+  transform:rotate(-90deg)
+}
+.sb-bloque.closed .sb-items{
+  display:none
+}
+.sb-sec-label{
+  font-size:9.5px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--txt3);
+  padding:7px 18px 3px;
+  margin-top:4px
+}
+.sb-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 18px 4px 24px;
+  font-size:11.5px;
+  color:var(--txt3);
+  cursor:pointer;
+  transition:color .15s;
+  border-left:2px solid transparent;
+  margin:1px 0;
+  text-decoration:none
+}
+.sb-item:hover{
+  color:var(--txt2)
+}
+.sb-item.active{
+  color:var(--txt);
+  border-left-color:var(--a0);
+  background:rgba(139,127,247,.05)
+}
+.sb-item::before{
+  content:'›';
+  font-size:12px;
+  opacity:.5;
+  flex-shrink:0
+}
+
+#hamburger{
+  display:none;
+  position:fixed;
+  top:12px;
+  left:12px;
+  z-index:300;
+  background:var(--surf2);
+  border:1px solid var(--bd);
+  border-radius:8px;
+  padding:8px 10px;
+  cursor:pointer;
+  flex-direction:column;
+  gap:4px;
+  align-items:center;
+  justify-content:center
+}
+#hamburger span{
+  display:block;
+  width:18px;
+  height:2px;
+  background:var(--txt2);
+  border-radius:2px;
+  transition:all .25s
+}
+#overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:150;
+  backdrop-filter:blur(2px)
+}
+
+#main{
+  margin-left:var(--sb);
+  flex:1;
+  min-width:0;
+  padding:48px 60px 100px;
+}
+.main-inner{
+  max-width:var(--content-max);
+  margin:0 auto
+}
+
+.toc-wrap{
+  background:var(--surf1);
+  border:1px solid var(--bd);
+  border-radius:12px;
+  padding:22px 26px;
+  margin-bottom:48px
+}
+.toc-wrap h2{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--txt3);
+  margin-bottom:14px
+}
+.toc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:8px
+}
+.toc-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  background:var(--surf2);
+  border:1px solid var(--bd);
+  border-radius:8px;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+  text-decoration:none
+}
+.toc-item:hover{
+  border-color:var(--bd2);
+  background:var(--surf3)
+}
+.toc-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  min-width:20px
+}
+.toc-lbl{
+  font-size:12px;
+  color:var(--txt2)
+}
+
+.bloque{
+  margin-bottom:80px;
+  scroll-margin-top:20px
+}
+.bloque-hdr{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;margin-bottom:30px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--bd)
+}
+.bloque-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:4px;
+  border:1px solid;
+  flex-shrink:0;
+  margin-top:6px;
+  white-space:nowrap
+}
+.bloque-hdr h2{
+  font-size:clamp(20px,3vw,28px);
+  font-weight:600;
+  line-height:1.2
+}
+.bloque-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px
+}
+.b-tag{
+  font-size:11px;
+  font-family:'JetBrains Mono',monospace;
+  padding:3px 9px;
+  border-radius:20px;
+  border:1px solid var(--bd);
+  color:var(--txt3)
+}
+
+.section{
+  margin-bottom:32px
+}
+.sec-title{
+  font-size:13px;
+  font-weight:600;
+  color:var(--txt2);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+.sec-title::before{
+  content:'';
+  display:block;
+  width:3px;
+  height:14px;
+  border-radius:2px;
+  background:var(--bd2)
+}
+
+.topic{
+  background:var(--surf1);
+  border:1px solid var(--bd);
+  border-radius:10px;
+  margin-bottom:8px;
+  overflow:hidden;
+  scroll-margin-top:20px
+}
+.topic-hdr{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 16px;
+  cursor:pointer;
+  user-select:none;
+  transition:background .15s
+}
+.topic-hdr:hover{
+  background:var(--surf2)
+}
+.t-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  flex-shrink:0
+}
+.t-title{
+  flex:1;
+  font-size:13.5px;
+  font-weight:500;
+  color:var(--txt)
+}
+.t-tag{
+  font-size:10px;
+  font-family:'JetBrains Mono',monospace;
+  padding:2px 8px;
+  border-radius:3px;
+  flex-shrink:0
+}
+.t-chev{
+  font-size:12px;
+  color:var(--txt3);
+  transition:transform .2s;
+  flex-shrink:0
+}
+.topic.open .t-chev{
+  transform:rotate(90deg)
+}
+.topic-body{
+  display:none;
+  padding:4px 16px 18px;
+  border-top:1px solid var(--bd)
+}
+.topic.open .topic-body{
+  display:block
+}
+
+.tabs{
+  display:flex;
+  gap:0;
+  margin:14px 0 0;
+  border-bottom:1px solid var(--bd)
+}
+.tab-btn{
+  background:none;
+  border:none;
+  padding:7px 14px;
+  font-size:12px;
+  font-family:'Sora',sans-serif;
+  color:var(--txt3);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+  transition:color .15s,border-color .15s
+}
+.tab-btn:hover{
+  color:var(--txt2)
+}
+.tab-btn.active{
+  color:var(--txt);
+  border-bottom-color:var(--a0)
+}
+.tab-pane{
+  display:none;
+  padding-top:12px
+}
+.tab-pane.active{
+  display:block
+}
+
+.items-list{
+  list-style:none;
+  columns:2;
+  column-gap:20px
+}
+.items-list li{
+  font-size:12.5px;
+  color:var(--txt2);
+  padding:3px 0 3px 14px;
+  position:relative;
+  break-inside:avoid;
+  line-height:1.6
+}
+.items-list li::before{
+  content:'›';
+  position:absolute;
+  left:0;
+  color:var(--txt3)
+}
+.items-list li strong{
+  color:var(--txt);
+  font-weight:500
+}
+
+.prac-list{
+  list-style:none
+}
+.prac-item{
+  display:flex;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid var(--bd)
+}
+.prac-item:last-child{
+  border-bottom:none
+}
+.prac-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--a1);
+  font-weight:700;
+  flex-shrink:0;
+  margin-top:2px;
+  min-width:20px
+}
+.prac-text{
+  font-size:12.5px;
+  color:var(--txt2);
+  line-height:1.6
+}
+.prac-text strong{
+  color:var(--txt)
+}
+
+.code-wrap{
+  margin:4px 0
+}
+.code-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--txt3);
+  padding:8px 14px 6px;
+  background:var(--code-bg);
+  border:1px solid var(--code-bd);
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.copy-btn{
+  background:var(--surf3);
+  border:1px solid var(--bd);
+  border-radius:4px;
+  padding:3px 8px;
+  font-size:10px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--txt3);
+  cursor:pointer;
+  transition:color .15s
+}
+.copy-btn:hover{
+  color:var(--txt)
+}
+pre{
+  background:var(--code-bg);
+  border:1px solid var(--code-bd);
+  border-radius:0 0 8px 8px;
+  padding:14px;
+  overflow-x:auto;
+  line-height:1.6;
+  margin:0
+}
+pre code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:#c8c8e0;
+  background:none;
+  padding:0;
+  white-space:pre
+}
+
+.items-list code, .prac-text code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  background:var(--surf3);
+  padding:1px 5px;
+  border-radius:3px;
+  color:var(--a1)
+}
+
+.note{
+  margin-top:12px;
+  background:rgba(245,204,69,.05);
+  border-left:3px solid var(--a5);
+  border-radius:0 6px 6px 0;
+  padding:10px 14px;
+  font-size:12px;
+  color:#c8c060;
+  line-height:1.6
+}
+.note strong{
+  color:var(--a5)
+}
+
+.c0{
+  color:var(--a0)
+} .c1{
+  color:var(--a5)
+} .c2{
+  color:var(--a3)
+} .c3{
+  color:var(--a1)
+}
+.c4{
+  color:var(--a2)
+} .c5{
+  color:var(--a4)
+} .c6{
+  color:var(--a2)
+} .c7{
+  color:var(--a6)
+}
+.c8{
+  color:var(--a5)
+} .c9{
+  color:var(--a0)
+} .c10{
+  color:var(--a3)
+} .c11{
+  color:var(--a1)
+}
+.c12{
+  color:var(--a4)
+} .c13{
+  color:var(--a7)
+} .c14{
+  color:var(--a2)
+}
+
+.bg0{
+  background:rgba(139,127,247,.1);
+  color:var(--a0);
+  border-color:var(--a0)
+}
+.bg1{
+  background:rgba(245,204,69,.1);
+  color:var(--a5);
+  border-color:var(--a5)
+}
+.bg2{
+  background:rgba(106,184,245,.1);
+  color:var(--a3);
+  border-color:var(--a3)
+}
+.bg3{
+  background:rgba(86,212,178,.1);
+  color:var(--a1);
+  border-color:var(--a1)
+}
+.bg4{
+  background:rgba(244,124,110,.1);
+  color:var(--a2);
+  border-color:var(--a2)
+}
+.bg5{
+  background:rgba(224,123,224,.1);
+  color:var(--a4);
+  border-color:var(--a4)
+}
+.bg6{
+  background:rgba(244,124,110,.1);
+  color:var(--a2);
+  border-color:var(--a2)
+}
+.bg7{
+  background:rgba(130,221,149,.1);
+  color:var(--a6);
+  border-color:var(--a6)
+}
+.bg8{
+  background:rgba(245,204,69,.1);
+  color:var(--a5);
+  border-color:var(--a5)
+}
+.bg9{
+  background:rgba(139,127,247,.1);
+  color:var(--a0);
+  border-color:var(--a0)
+}
+.bg10{
+  background:rgba(106,184,245,.1);
+  color:var(--a3);
+  border-color:var(--a3)
+}
+.bg11{
+  background:rgba(86,212,178,.1);
+  color:var(--a1);
+  border-color:var(--a1)
+}
+.bg12{
+  background:rgba(224,123,224,.1);
+  color:var(--a4);
+  border-color:var(--a4)
+}
+.bg13{
+  background:rgba(245,163,72,.1);
+  color:var(--a7);
+  border-color:var(--a7)
+}
+.bg14{
+  background:rgba(244,124,110,.1);
+  color:var(--a2);
+  border-color:var(--a2)
+}
+
+.dot0{
+  background:var(--a0)
+} .dot1{
+  background:var(--a5)
+} .dot2{
+  background:var(--a3)
+}
+.dot3{
+  background:var(--a1)
+} .dot4{
+  background:var(--a2)
+} .dot5{
+  background:var(--a4)
+}
+.dot6{
+  background:var(--a2)
+} .dot7{
+  background:var(--a6)
+} .dot8{
+  background:var(--a5)
+}
+.dot9{
+  background:var(--a0)
+} .dot10{
+  background:var(--a3)
+} .dot11{
+  background:var(--a1)
+}
+.dot12{
+  background:var(--a4)
+} .dot13{
+  background:var(--a7)
+} .dot14{
+  background:var(--a2)
+}
+
+@media(max-width:1439px){
+  :root{
+    --sb:240px;
+    --content-max:820px
+  }
+  #main{
+    padding:40px 44px 80px
+  }
+}
+
+@media(max-width:1023px){
+  :root{
+    --sb:220px
+  }
+  #main{
+    padding:32px 32px 80px
+  }
+  .items-list{
+    columns:1
+  }
+}
+
+@media(max-width:767px){
+  #hamburger{
+    display:flex
+  }
+  #sb{
+    transform:translateX(-100%)
+  }
+  #sb.open{
+    transform:translateX(0)
+  }
+  #overlay{
+    display:none
+  }
+  #overlay.visible{
+    display:block
+  }
+  #main{
+    margin-left:0;
+    padding:20px 16px 80px
+  }
+  .bloque-hdr{
+    flex-direction:column;
+    gap:8px
+  }
+  .items-list{
+    columns:1
+  }
+  .toc-grid{
+    grid-template-columns:1fr 1fr
+  }
+  .tabs{
+    overflow-x:auto
+  }
+}
+
+@media(min-width:2000px){
+  :root{
+    --sb:300px;
+    --content-max:1100px
+  }
+  body{
+    font-size:15px
+  }
+  #main{
+    padding:64px 80px 120px
+  }
+  pre code{
+    font-size:13px
+  }
+}
+</style>
+</head>
+<body>
+
+<button id="hamburger" aria-label="Menú" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</button>
+<div id="overlay" onclick="toggleSidebar()"></div>
+
+<nav id="sb">
+  <div id="sb-head">
+    <h1>Temario · Informática</h1>
+    <p>Desde cero hasta hacking ético</p>
+  </div>
+  <div id="sb-search"><input type="text" id="sb-input" placeholder="Buscar tema..." oninput="filterSidebar(this.value)"></div>
+  <div id="sb-nav"></div>
+</nav>
+
+<main id="main">
+  <div class="main-inner">
+    <div class="toc-wrap">
+      <h2>Índice de bloques</h2>
+      <div class="toc-grid" id="toc"></div>
+    </div>
+    <div id="content"></div>
+  </div>
+</main>
+
+<script>
+
+function safe(str) {
+  const escaped = str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  return escaped.replace(/&lt;(\/?(code|strong|em|b|i|br|kbd))&gt;/g, '<$1>');
+}
+
+const BLOQUES = [
+{
+  id:'b0', label:'BLOQUE 0', title:'Mentalidad y metodología',
+  weeks:'1–2 sem', tipo:'Conceptual',
+  sections:[
+    { title:'Cómo aprender tecnología', topics:[
+      { title:'El método correcto de aprendizaje técnico', tag:'Filosofía',
+        items:[
+          'El síndrome del tutorial infinito: ver horas de vídeo sin construir nada <strong>no funciona</strong>',
+          'Ciclo correcto: concepto → ejemplo → práctica → mini-proyecto → enseñar',
+          'Aprendizaje basado en proyectos: construir algo real desde el primer día',
+          'El error como herramienta: si no fallas, no estás en el límite de tu conocimiento',
+          'Tiempo de calidad vs cantidad: 1 hora concentrada supera 4 horas dispersas',
+          'Efecto Dunning-Kruger en tecnología: la "meseta de desesperación" es normal',
+          'Cuándo pedir ayuda: luchar 20 minutos antes de preguntar, explicar qué intentaste',
+          'Usar IA correctamente: como tutor socrático, no como copiadora de soluciones',
+          'Rubber duck debugging: explicar el problema en voz alta a un objeto — funciona de verdad',
+          'El repositorio de aprendizaje: un repo en GitHub con todos los ejercicios organizados'
+        ],
+        practica:[
+          'Configurar Obsidian o Notion como diario técnico diario',
+          'Crear repo en GitHub: <code>aprendizaje-informatica</code> con carpetas por bloque',
+          'Tablero Kanban (Trello/Notion): columnas "por aprender / estudiando / dominado"',
+          'Instalar Anki y crear el primer mazo con 10 conceptos básicos'
+        ],
+        code:[{ lang:'bash', label:'Estructura recomendada del repo de aprendizaje', src:
+`# Crear la estructura del repositorio de aprendizaje
+mkdir -p aprendizaje-informatica/{bloque-00-metodologia,bloque-01-fundamentos,bloque-02-ofimatica,bloque-03-redes,bloque-04-windows,bloque-05-linux,bloque-06-programacion,bloque-07-c,bloque-08-poo,bloque-09-java,bloque-10-javascript,bloque-11-rust,bloque-12-web,bloque-13-devops,bloque-14-hacking}
+
+# Dentro de cada bloque
+mkdir -p bloque-07-c/{teoria,ejercicios,proyectos,notas}
+
+# README inicial
+cat > README.md << 'EOF'
+# Aprendizaje de Informática
+Repositorio personal de estudio. Actualizado a diario.
+
+## Progreso
+- [x] Bloque 0: Metodología
+- [ ] Bloque 1: Fundamentos
+...
+EOF
+
+git init && git add . && git commit -m "feat: estructura inicial del repositorio"` }]
+      },
+      { title:'Inglés técnico — no es opcional', tag:'Transversal',
+        items:[
+          'El 90% de la documentación técnica está en inglés y no va a cambiar',
+          'Vocabulario base esencial: <strong>repository, deploy, debug, compile, runtime, instance</strong>',
+          'Más vocab: <strong>endpoint, payload, callback, scope, heap, pointer, buffer, socket, thread</strong>',
+          'Leer errores en inglés: extraer la información útil de un <em>stack trace</em>',
+          'Stack Overflow: cómo hacer una buena pregunta (código mínimo reproducible, contexto, lo que intentaste)',
+          'Documentación oficial: navegar MDN, man pages, The Rust Book',
+          'GitHub: leer issues, pull requests, changelogs y READMEs de proyectos reales',
+          'Buscar errores en Google: pegar el mensaje exacto entre comillas'
+        ],
+        practica:[
+          'Leer un error de compilación de C en inglés y anotar qué significa cada parte',
+          'Buscar y resolver un error real de Stack Overflow relacionado con lo que estudies esa semana',
+          'Leer el README de un proyecto popular en GitHub (ej: htop, fzf) y resumirlo en español'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b1', label:'BLOQUE 1', title:'Fundamentos de Informática',
+  weeks:'5–7 sem', tipo:'Teórico + Exploratorio',
+  sections:[
+    { title:'Sistemas numéricos y representación de datos', topics:[
+      { title:'Binario, octal y hexadecimal', tag:'Matemáticas',
+        items:[
+          'Base 10 (decimal): la que usamos, 10 dígitos por convención cultural',
+          'Base 2 (binario): dos estados físicos — apagado/encendido, 0V/5V, false/true',
+          'Conversión decimal→binario: divisiones sucesivas entre 2, leer restos al revés',
+          'Base 16 (hexadecimal): agrupa 4 bits, dígitos 0-9 y A(10)-F(15)',
+          'Conversión trivial entre binario y hex: cada nibble (4 bits) = 1 dígito hex',
+          'Prefijos: <code>0b</code> para binario, <code>0x</code> para hex en código',
+          'Suma binaria: 0+0=0, 0+1=1, 1+1=10 (acarreo), 1+1+1=11',
+          'Overflow: <code>11111111 + 1 = 00000000</code> en 8 bits — vulnerabilidades reales',
+          'Complemento a 2: representación de negativos — invertir todos los bits y sumar 1',
+          'IEEE 754: cómo se almacenan los flotantes — signo (1b), exponente (8b), mantisa (23b)',
+          'Por qué <code>0.1 + 0.2 != 0.3</code>: la precisión finita del estándar flotante'
+        ],
+        practica:[
+          'Convertir a mano: 255, 128, 42 a binario y hexadecimal',
+          'Calcular: ¿cuántos valores distintos caben en 1 byte? ¿en 2 bytes? ¿en 4?',
+          'Abrir la calculadora del sistema en modo Programador y verificar tus resultados'
+        ],
+        code:[{ lang:'python', label:'Conversiones entre bases en Python', src:
+`# Decimal a otras bases
+n = 255
+print(bin(n))   # '0b11111111'
+print(oct(n))   # '0o377'
+print(hex(n))   # '0xff'
+
+# Formatear sin prefijo
+print(format(n, 'b'))   # '11111111'
+print(format(n, '08b')) # '11111111' (relleno con ceros a 8 bits)
+print(format(n, 'x'))   # 'ff'
+
+# De otras bases a decimal
+print(int('11111111', 2))  # 255  (binario → decimal)
+print(int('ff', 16))       # 255  (hex → decimal)
+
+# El bug famoso del flotante
+print(0.1 + 0.2)           # 0.30000000000000004
+print(0.1 + 0.2 == 0.3)    # False  ← siempre usar round() o Decimal
+from decimal import Decimal
+print(Decimal('0.1') + Decimal('0.2'))  # 0.3  ← correcto`
+        }]
+      },
+      { title:'Representación de texto, imágenes y sonido', tag:'Codificación',
+        items:[
+          'ASCII: 7 bits, 128 caracteres, origen en 1963 — solo inglés',
+          'Unicode: más de 143.000 caracteres asignados, incluye emojis',
+          'UTF-8: codificación variable (1–4 bytes), compatible con ASCII, dominante en la web',
+          'UTF-16: 2–4 bytes, usado internamente por Java, JS y Windows',
+          'Endianness: Big Endian (red) vs Little Endian (x86) — el orden de bytes importa al comunicar',
+          'Píxeles: la unidad mínima de imagen, coordenadas (x,y)',
+          'RGB: 3 canales de 8 bits = 16.7 millones de colores; RGBA añade canal alfa',
+          'PNG vs JPEG: sin pérdida (lossless) vs con pérdida (lossy) — trade-off calidad/tamaño',
+          'Muestreo de audio: 44.100 Hz en CD — número de muestras por segundo',
+          'Formatos audio: WAV (sin comprimir), MP3 (lossy), FLAC (lossless)',
+          'Vídeo: FPS (fotogramas/segundo), codecs H.264/H.265/AV1, contenedores MP4/MKV'
+        ],
+        practica:[
+          'Convertir tu nombre a ASCII decimal y luego a binario',
+          'Abrir un archivo .txt con un editor hexadecimal (xxd en Linux) y ver los bytes',
+          'Guardar la misma foto como PNG y JPEG al 10% de calidad — comparar tamaños'
+        ],
+        code:[{ lang:'python', label:'Explorar codificación de texto', src:
+`# Codificación de texto
+texto = "Hola"
+print(texto.encode('utf-8'))    # b'Hola'  (ASCII puro, 1 byte por carácter)
+
+texto2 = "Hola ñ 🎉"
+enc = texto2.encode('utf-8')
+print(enc)                       # b'Hola \xc3\xb1 \xf0\x9f\x8e\x89'
+print(len(texto2))               # 9  caracteres
+print(len(enc))                  # 14 bytes — UTF-8 usa más bytes para no-ASCII
+
+# Ver el codepoint Unicode
+for c in "ABC ñ 🎉":
+    print(f"'{c}'  U+{ord(c):04X}  {ord(c)}")`
+        }]
+      }
+    ]},
+    { title:'Arquitectura de computadoras', topics:[
+      { title:'La CPU: el ciclo Fetch-Decode-Execute', tag:'Hardware',
+        items:[
+          'Arquitectura Von Neumann: CPU + Memoria + I/O comunicados por un bus',
+          'Ciclo Fetch-Decode-Execute: lo que la CPU repite miles de millones de veces/segundo',
+          'Registros: memoria ultra-rápida dentro de la CPU (PC, SP, AX, BX…)',
+          'Program Counter (PC): siempre apunta a la siguiente instrucción a ejecutar',
+          'ALU: suma, resta, AND, OR, NOT, desplazamientos — el núcleo aritmético',
+          'Reloj (clock): frecuencia en GHz = ciclos por segundo — sincroniza todo',
+          'Pipeline: dividir instrucciones en etapas para procesar varias a la vez (5 etapas típicas)',
+          'Branch prediction: predecir el siguiente salto para no vaciar el pipeline',
+          'Superscalar: ejecutar múltiples instrucciones simultáneamente en unidades paralelas',
+          'RISC vs CISC: instrucciones simples/rápidas (ARM) vs complejas/potentes (x86)',
+          'Núcleos múltiples: cada núcleo es una CPU casi completa — 4, 8, 16, 32 núcleos',
+          'Hyperthreading/SMT: un núcleo físico presenta 2 núcleos lógicos al sistema operativo'
+        ],
+        practica:[
+          'Abrir el Monitor de Actividad y observar el uso por núcleo en tiempo real',
+          'Instalar CPU-Z (Windows) o ejecutar <code>lscpu</code> (Linux) y anotar cada campo',
+          'Abrir htop y ordenar procesos por uso de CPU — ¿qué proceso consume más?'
+        ]
+      },
+      { title:'Jerarquía de memoria y almacenamiento', tag:'Hardware',
+        items:[
+          'Jerarquía: Registros → Caché L1 → Caché L2 → Caché L3 → RAM → SSD → HDD',
+          'Principio de localidad: temporal (reusar lo reciente) y espacial (acceder a lo contiguo)',
+          'Caché L1: ~32 KB por núcleo, latencia ~4 ciclos, dentro del núcleo mismo',
+          'Caché L2: ~256 KB–1 MB por núcleo, latencia ~12 ciclos',
+          'Caché L3: 8–64 MB compartida entre núcleos, latencia ~40 ciclos',
+          'RAM: GB–TB, latencia ~100 ns, <strong>volátil</strong> — pierde datos sin energía',
+          'DDR4 vs DDR5: mayor frecuencia, ancho de banda y eficiencia energética en DDR5',
+          'SSD NVMe: latencia ~100 µs, hasta 7.000 MB/s (PCIe 4.0)',
+          'SSD SATA: límite de ~550 MB/s por el bus — más lento que NVMe pero más barato',
+          'HDD: latencia ~10 ms (disco girando), ~200 MB/s, ideal para almacenamiento masivo',
+          'Swap/memoria virtual: usar disco como RAM de emergencia — funciona, pero lento',
+          'Page size: 4 KB normalmente; <em>huge pages</em> (2 MB) para bases de datos'
+        ],
+        practica:[
+          'Medir velocidad del disco con CrystalDiskMark (Win) o <code>dd</code> (Linux)',
+          'Comparar el tiempo de abrir una app desde SSD vs penddrive USB 2.0',
+          'Ejecutar <code>free -h</code> en Linux o msinfo32 en Windows para ver la RAM disponible'
+        ]
+      },
+      { title:'Gestión de procesos y memoria (SO)', tag:'Teoría',
+        items:[
+          'Proceso vs programa: el programa es el código estático; el proceso es la ejecución activa',
+          'PCB (Process Control Block): estado, PID, registros, mapa de memoria, archivos abiertos',
+          'Estados de un proceso: New → Ready → Running → Waiting → Terminated',
+          'Context switching: guardar y restaurar el estado completo de la CPU al cambiar de proceso',
+          'Scheduler: Round Robin, CFS (Linux), prioridades — decide quién corre y cuándo',
+          'Hilos (threads): procesos ligeros que comparten memoria del proceso padre',
+          'Concurrencia vs paralelismo: intercalar en 1 núcleo (concurrencia) vs ejecutar en N (paralelismo)',
+          'Race condition: dos hilos leen/escriben el mismo dato sin coordinación — bug impredecible',
+          'Mutex (lock): solo un hilo accede a la sección crítica a la vez',
+          'Deadlock: proceso A espera a B, B espera a A — ambos bloqueados para siempre',
+          'Memoria virtual: cada proceso cree que tiene toda la memoria — el SO gestiona la ilusión',
+          'Paginación: dividir la memoria en páginas de 4 KB para asignarla de forma no contigua',
+          'Page fault: la página pedida no está en RAM — el SO la trae del disco (lento)'
+        ],
+        practica:[
+          'En Linux: <code>ps aux</code> — entender PID, PPID, CPU%, MEM%, STAT, COMMAND',
+          'Crear intencionalmente un proceso zombie en Python y observarlo con <code>ps</code>',
+          'Simular un deadlock simple con dos threads Python y dos locks — ver cómo se cuelga'
+        ],
+        code:[{ lang:'python', label:'Simular un deadlock (SOLO para aprender, cuelga el programa)', src:
+`import threading
+import time
+
+lock_a = threading.Lock()
+lock_b = threading.Lock()
+
+def hilo_1():
+    with lock_a:
+        print("Hilo 1: tiene lock_a, espera lock_b...")
+        time.sleep(0.1)
+        with lock_b:  # ← Este lock ya lo tiene Hilo 2
+            print("Hilo 1: tiene ambos locks")  # nunca llega aquí
+
+def hilo_2():
+    with lock_b:
+        print("Hilo 2: tiene lock_b, espera lock_a...")
+        time.sleep(0.1)
+        with lock_a:  # ← Este lock ya lo tiene Hilo 1
+            print("Hilo 2: tiene ambos locks")  # nunca llega aquí
+
+t1 = threading.Thread(target=hilo_1)
+t2 = threading.Thread(target=hilo_2)
+t1.start()
+t2.start()
+# El programa se cuelga aquí. Usa Ctrl+C para terminar.
+# Solución: adquirir siempre los locks en el mismo orden`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b2', label:'BLOQUE 2', title:'Ofimática y productividad digital',
+  weeks:'2–3 sem', tipo:'Práctico',
+  sections:[
+    { title:'Suite ofimática completa', topics:[
+      { title:'Word / Google Docs — documentos profesionales', tag:'Práctica',
+        items:[
+          'Estilos de párrafo: Título 1/2/3, Normal, Cita — base de un documento bien estructurado',
+          'Índice automático generado desde estilos — actualizar con F9 o clic derecho',
+          'Formato de carácter vs formato de párrafo — diferencia fundamental',
+          'Tablas: insertar, formatear, fórmulas simples (<code>=SUM(ABOVE)</code>)',
+          'Control de cambios (Track Changes): colaboración profesional revisable',
+          'Combinar correspondencia: generar cientos de cartas personalizadas desde Excel',
+          'Exportar a PDF con marcadores de sección y metadatos',
+          'Macros básicas: automatizar tareas repetitivas con una tecla',
+          'Secciones: orientación mixta (portrait + landscape en el mismo documento)',
+          'Google Docs: edición simultánea, historial de versiones, sugerencias vs edición directa'
+        ],
+        practica:[
+          'Redactar ensayo de 3 páginas: portada, índice automático, 3 secciones, bibliografía',
+          'Combinar correspondencia para generar 10 cartas personalizadas desde un Excel de nombres',
+          'Crear una plantilla corporativa reutilizable con logotipo, pie de página y estilos'
+        ]
+      },
+      { title:'Excel / Google Sheets — hojas de cálculo', tag:'Práctica',
+        items:[
+          'Referencias relativas (<code>A1</code>), absolutas (<code>$A$1</code>) y mixtas — entender cuándo usa cada una',
+          'Funciones esenciales: SUMA, PROMEDIO, MIN, MAX, CONTAR, CONTAR.SI, SUMA.SI',
+          'Funciones de texto: IZQUIERDA, DERECHA, EXTRAE, CONCATENAR, TEXTO, MAYUSC',
+          'Funciones lógicas: SI, Y, O, NO, SI.ERROR, IFS',
+          'Búsqueda: BUSCARV, BUSCARH, INDICE+COINCIDIR, XLOOKUP (moderno)',
+          'Tablas dinámicas: agrupar, filtrar y sumar grandes volúmenes sin código',
+          'Gráficos: tipos (barras, líneas, dispersión, tarta) — cuándo usar cada uno',
+          'Formato condicional: colorear celdas automáticamente según reglas',
+          'Validación de datos: listas desplegables, restricciones de tipo de entrada',
+          'Power Query: transformar datos de fuentes externas sin código'
+        ],
+        practica:[
+          'Presupuesto mensual: categorías, sumas automáticas, gráfico de tarta, formato condicional para excesos',
+          'Importar CSV de 1000 filas y hacer tabla dinámica con totales por categoría y mes',
+          'Usar BUSCARV para cruzar dos tablas y encontrar datos coincidentes'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b3', label:'BLOQUE 3', title:'Redes e Internet',
+  weeks:'3–4 sem', tipo:'Teórico + Práctico',
+  sections:[
+    { title:'Protocolos y arquitectura de red', topics:[
+      { title:'Modelo OSI y TCP/IP en detalle', tag:'Fundamentos',
+        items:[
+          'Modelo OSI: 7 capas — creado para interoperabilidad entre fabricantes distintos',
+          'Capa 1 Física: bits sobre cable eléctrico, fibra óptica o radio (WiFi)',
+          'Capa 2 Enlace: frames, MAC address (hardware), switches, ARP, VLAN',
+          'Capa 3 Red: paquetes IP, enrutamiento, routers — encuentra el camino',
+          'Capa 4 Transporte: segmentos TCP/UDP, puertos, control de flujo y errores',
+          'Capas 5-7 Aplicación: en la práctica van juntas — HTTP, DNS, SMTP, SSH',
+          'TCP/IP (modelo Internet): 4 capas — Acceso red, Internet, Transporte, Aplicación',
+          'Encapsulación: cada capa añade su header al bajar, lo quita al subir',
+          'PDU: bit (física), frame (enlace), paquete (red), segmento (transporte), datos (aplicación)',
+          'Three-way handshake TCP: SYN → SYN-ACK → ACK — el saludo inicial de TCP',
+          'UDP: sin conexión, sin garantías — rápido para streaming, juegos, DNS, VoIP',
+          'Puertos conocidos: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS, 25/587 SMTP, 3306 MySQL'
+        ],
+        practica:[
+          'Capturar con Wireshark un ping a 8.8.8.8 — identificar frames Ethernet, paquetes IP e ICMP',
+          'Dibujar en papel el viaje de un paquete HTTP de navegador a google.com y de vuelta',
+          'Ejecutar <code>traceroute google.com</code> y entender cada salto'
+        ],
+        code:[{ lang:'bash', label:'Comandos de diagnóstico de red esenciales', src:
+`# Ver configuración de red
+ip a                          # Linux: todas las interfaces y sus IPs
+ip r                          # Linux: tabla de enrutamiento
+ipconfig /all                 # Windows: equivalente
+
+# Diagnóstico básico
+ping -c 4 8.8.8.8             # 4 paquetes ICMP a Google DNS
+traceroute google.com         # Linux: ver cada salto de la ruta
+tracert google.com            # Windows: mismo comando
+
+# Puertos y conexiones
+ss -tulpn                     # Linux: sockets abiertos (reemplaza netstat)
+netstat -ano                  # Windows: conexiones activas con PID
+
+# DNS
+nslookup google.com           # Resolver nombre → IP
+dig google.com A              # Linux: query DNS detallado
+dig google.com MX             # Ver registros de correo
+
+# Escaneo rápido (solo en tu red)
+nmap -sn 192.168.1.0/24       # Descubrir hosts activos en la red local`
+        }]
+      },
+      { title:'IP, subredes, DHCP y DNS', tag:'Redes',
+        items:[
+          'Dirección IPv4: 4 octetos de 8 bits — notación decimal con puntos (192.168.1.1)',
+          'Rangos privados (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16',
+          'CIDR: /24 = 256 IPs, /25 = 128 IPs, /16 = 65.536 IPs, /8 = 16.7M IPs',
+          'Máscara de red: /24 → 255.255.255.0 — indica qué bits son red vs host',
+          'NAT: cómo toda una casa comparte 1 IP pública — traducción de puertos',
+          'IPv6: 128 bits, notación hex con : — necesario porque se agotó IPv4',
+          'DHCP: discover → offer → request → acknowledge — asignación automática de IPs',
+          'DNS: sistema de nombres distribuido — convierte nombres en IPs y viceversa',
+          'Registros DNS: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), TXT (verificación)',
+          'ARP: mapea IPs a MACs en la red local — base del ataque ARP spoofing',
+          'Gateway por defecto: la "puerta de salida" de tu red local al exterior'
+        ],
+        practica:[
+          'Dado 192.168.10.0/25: calcular hosts disponibles, broadcast y máscara',
+          'Ejecutar <code>ipconfig /all</code> (Win) o <code>ip a</code> (Linux) e identificar IP, gateway, DNS',
+          'Capturar con Wireshark un broadcast ARP y ver el mensaje "who has 192.168.x.x?"'
+        ]
+      },
+      { title:'TLS/HTTPS y seguridad en transporte', tag:'Seguridad',
+        items:[
+          'HTTP sin cifrar: todo viaja en texto plano — cualquiera en la red puede leerlo',
+          'TLS 1.3: cifra la comunicación — sucesor de SSL (obsoleto)',
+          'Handshake TLS 1.3: ClientHello → ServerHello → Certificate → Finished (1 round-trip)',
+          'Certificados X.509: firmados por una CA de confianza — cadena de certificación',
+          'Let\'s Encrypt: certificados gratuitos y automáticos — democratizó HTTPS',
+          'HSTS: forzar HTTPS para siempre en un dominio — cabecera en el servidor',
+          'HTTPS ≠ sitio seguro: solo significa que el canal está cifrado, no que el sitio es legítimo',
+          'Cifrado simétrico (AES): misma clave cifra y descifra — rápido para datos masivos',
+          'Cifrado asimétrico (RSA/ECC): clave pública cifra, privada descifra — para acordar claves',
+          'Perfect Forward Secrecy (ECDHE): cada sesión usa claves efímeras distintas',
+          'MITM attack: interceptar comunicación entre dos partes haciéndose pasar por el servidor'
+        ],
+        practica:[
+          'Ver el certificado de cualquier web en Chrome: candado → "La conexión es segura" → Certificado',
+          'Capturar tráfico HTTPS con Wireshark y confirmar que está cifrado (no se ve el contenido)',
+          'Instalar mkcert y crear un certificado local para desarrollo'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b4', label:'BLOQUE 4', title:'Windows en profundidad',
+  weeks:'2–3 sem', tipo:'Práctico',
+  sections:[
+    { title:'Arquitectura y administración avanzada', topics:[
+      { title:'Arquitectura NT y herramientas de diagnóstico', tag:'Sistema',
+        items:[
+          'Evolución: DOS → Win 3.1 → Win 95/98/ME → XP → Vista → 7 → 8 → 10 → 11',
+          'Arquitectura NT: kernel mode (HAL, Executive, drivers) vs user mode (subsistemas, apps)',
+          'El registro de Windows: colmenas HKLM, HKCU, HKCR, HKU — base de datos de configuración',
+          'UAC (User Account Control): separar token de usuario estándar del administrador',
+          'Administrador de tareas avanzado: Procesos, Rendimiento, Historial, Inicio, Detalles, Servicios',
+          'Monitor de recursos: granularidad por proceso de CPU, RAM, disco y red',
+          'Visor de eventos: niveles Error/Warning/Info, logs Sistema y Aplicaciones',
+          'Administrador de dispositivos: drivers, conflictos, códigos de error de hardware',
+          'msconfig / msinfo32: arranque, servicios, información del sistema',
+          '<strong>Sysinternals Suite</strong>: Process Explorer, Process Monitor, Autoruns, TCPView — herramientas reales de diagnóstico profesional'
+        ],
+        practica:[
+          'Usar Autoruns (Sysinternals) para auditar arranque — desactivar entradas innecesarias',
+          'Comparar Process Explorer vs Administrador de tareas — ¿qué información extra ofrece?',
+          'Usar el Visor de eventos para encontrar el último error crítico del sistema'
+        ]
+      }
+    ]},
+    { title:'PowerShell — la terminal orientada a objetos', topics:[
+      { title:'PowerShell: scripting y administración', tag:'Terminal',
+        items:[
+          'Diferencia fundamental con CMD: PowerShell pasa <strong>objetos .NET</strong>, no texto',
+          'Cmdlets: verbo-sustantivo — <code>Get-Process</code>, <code>Stop-Service</code>, <code>New-Item</code>',
+          'Aliases: <code>ls</code>=Get-ChildItem, <code>ps</code>=Get-Process, <code>cat</code>=Get-Content',
+          'Pipeline orientado a objetos: filtrar, ordenar y formatear objetos encadenados',
+          'Formateo: <code>Format-Table</code>, <code>Format-List</code>, <code>Out-GridView</code>',
+          'Variables: <code>$nombre</code>, tipado opcional <code>[int]$x = 5</code>',
+          'Arrays: <code>@(1,2,3)</code>; hashtables: <code>@{clave="valor"}</code>',
+          'Condicionales: if/elseif/else, switch con patrones',
+          'Bucles: for, foreach, while, do-while, ForEach-Object en pipeline',
+          'Funciones: <code>function Nombre { param($x) ... }</code>',
+          'Manejo de errores: try/catch/finally, <code>-ErrorAction Stop</code>',
+          'Remoting: <code>Enter-PSSession</code>, <code>Invoke-Command -ComputerName</code>',
+          'Scheduled Tasks: <code>New-ScheduledTask</code>, <code>Register-ScheduledTask</code>'
+        ],
+        practica:[
+          'Script que monitoree CPU cada 5s durante 1min y guarde CSV con timestamp',
+          'Script que busque todos los procesos escuchando en un puerto específico',
+          'Crear Scheduled Task que ejecute backup diario a las 2am'
+        ],
+        code:[{ lang:'powershell', label:'PowerShell: ejemplos fundamentales', src:
+`# Pipeline orientado a objetos
+Get-Process |
+    Where-Object { $_.CPU -gt 5 } |
+    Sort-Object CPU -Descending |
+    Select-Object Name, Id, CPU, WorkingSet |
+    Format-Table -AutoSize
+
+# Script de monitoreo de CPU con log CSV
+$logPath = "$env:USERPROFILE\cpu_monitor.csv"
+"Timestamp,CPU_Total" | Out-File $logPath
+
+for ($i = 0; $i -lt 12; $i++) {
+    $cpu = (Get-CimInstance Win32_Processor).LoadPercentage
+    $ts  = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    "$ts,$cpu" | Add-Content $logPath
+    Write-Host "[$ts] CPU: $cpu%"
+    Start-Sleep -Seconds 5
+}
+
+# Buscar puertos abiertos
+Get-NetTCPConnection -State Listen |
+    Select-Object LocalPort,
+        @{N='Proceso';E={(Get-Process -Id $_.OwningProcess).Name}} |
+    Sort-Object LocalPort`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b5', label:'BLOQUE 5', title:'Linux a fondo',
+  weeks:'5–6 sem', tipo:'Práctico intensivo',
+  sections:[
+    { title:'Filosofía y estructura del sistema', topics:[
+      { title:'Filosofía UNIX y el ecosistema Linux', tag:'Filosofía',
+        items:[
+          'Reglas Unix: hacer <strong>una sola cosa bien</strong>, componer herramientas, texto como interfaz universal',
+          'POSIX: estándar que define qué debe poder hacer cualquier sistema Unix compatible',
+          'Linus Torvalds, 1991: el kernel Linux como proyecto estudiantil que cambió el mundo',
+          'GNU/Linux: el kernel Linux + las herramientas GNU (gcc, bash, coreutils) = sistema completo',
+          'Árbol de distribuciones: Debian → Ubuntu/Mint; Red Hat → Fedora/CentOS/Rocky; Arch → Manjaro',
+          'Alpine Linux: imagen base de ~5 MB, ideal para contenedores Docker',
+          'Kali Linux: herramientas de seguridad preinstaladas — <strong>no es para uso diario</strong>',
+          'Estructura /: /, /home (usuarios), /etc (config), /var (datos variables), /bin y /usr/bin (binarios), /lib (librerías), /tmp (temporal), /proc (virtual, info del kernel)',
+          'Entornos de escritorio: GNOME (moderno), KDE Plasma (configurable), XFCE (ligero), i3 (tiling)',
+          'Wayland vs X11: el futuro (Wayland) vs el presente/pasado (X11) de los displays Linux'
+        ],
+        practica:[
+          'Instalar Ubuntu 24.04 LTS en VirtualBox con 4 GB RAM, 50 GB disco y Guest Additions',
+          'Explorar <code>ls -la /</code> y documentar qué hay en cada directorio raíz',
+          'Instalar neofetch con apt y ejecutarlo — entender la salida'
+        ]
+      }
+    ]},
+    { title:'Bash y la terminal Linux', topics:[
+      { title:'Comandos esenciales de Linux', tag:'Terminal',
+        items:[
+          'Navegación: <code>ls -lahR</code>, <code>cd</code>, <code>pwd</code>, <code>pushd/popd</code>, <code>tree</code>',
+          'Archivos: <code>touch</code>, <code>cp -r</code>, <code>mv</code>, <code>rm -rf</code>, <code>mkdir -p</code>, <code>ln -s</code> (symlink), <code>stat</code>, <code>file</code>',
+          'Texto: <code>cat</code>, <code>less</code>, <code>head -n 20</code>, <code>tail -f</code>, <code>wc -l</code>, <code>strings</code>',
+          'Búsqueda: <code>grep -rn "patron" .</code>, <code>find / -name "*.conf" 2>/dev/null</code>, <code>which</code>, <code>locate</code>',
+          'Procesos: <code>ps aux</code>, <code>htop</code>, <code>kill -9 PID</code>, <code>killall nombre</code>, <code>nice/renice</code>',
+          'Red: <code>ip a</code>, <code>ip r</code>, <code>ss -tulpn</code>, <code>ping</code>, <code>curl -I</code>, <code>wget</code>',
+          'Disco: <code>df -h</code>, <code>du -sh *</code>, <code>lsblk</code>, <code>fdisk -l</code>, <code>mount/umount</code>',
+          'Compresión: <code>tar czf archivo.tar.gz carpeta/</code>, <code>tar xzf archivo.tar.gz</code>',
+          'Usuarios: <code>id</code>, <code>whoami</code>, <code>su -</code>, <code>sudo -i</code>, <code>useradd</code>, <code>passwd</code>',
+          'Texto avanzado: <code>sed "s/viejo/nuevo/g"</code>, <code>awk "{print $1}"</code>, <code>sort | uniq -c | sort -rn</code>, <code>cut -d: -f1</code>'
+        ],
+        practica:[
+          'One-liner: encontrar los 10 archivos más grandes en /var con find + sort + head',
+          'Analizar /var/log/auth.log con grep y awk para contar intentos fallidos de login por IP',
+          'Usar sed para reemplazar todas las ocurrencias de una palabra en un archivo sin abrir el editor'
+        ],
+        code:[{ lang:'bash', label:'One-liners útiles del día a día en Linux', src:
+`# Los 10 archivos más grandes en /var
+find /var -type f 2>/dev/null | xargs du -sh 2>/dev/null | sort -rh | head -10
+
+# IPs con más intentos fallidos de SSH (Debian/Ubuntu)
+grep "Failed password" /var/log/auth.log \
+  | awk '{print $(NF-3)}' \
+  | sort | uniq -c | sort -rn \
+  | head -10
+
+# Uso de disco por directorio en el directorio actual
+du -sh */ 2>/dev/null | sort -rh
+
+# Ver qué proceso usa un puerto (ej. 80)
+ss -tulpn | grep ':80'
+
+# Matar todos los procesos de un usuario
+pkill -u nombre_usuario
+
+# Buscar archivos modificados en las últimas 24 horas
+find /home -mtime -1 -type f 2>/dev/null
+
+# Reemplazar en todos los .txt de un directorio
+find . -name "*.txt" -exec sed -i 's/viejo/nuevo/g' {} +
+
+# Monitorear un log en tiempo real filtrando por patrón
+tail -f /var/log/syslog | grep --line-buffered "ERROR"`
+        }]
+      },
+      { title:'Bash scripting completo', tag:'Scripting',
+        items:[
+          'Shebang: <code>#!/usr/bin/env bash</code> — más portable que <code>#!/bin/bash</code>',
+          'Variables: <code>${var}</code>, valor por defecto <code>${var:-default}</code>, requerido <code>${var:?error}</code>',
+          'Tipos de comillas: simples <code>""</code> (literal), dobles <code>""</code> (interpola), <code>$()</code> (sustitución de comando)',
+          'Arrays: <code>arr=(a b c)</code>, acceso <code>${arr[0]}</code>, iterar <code>${arr[@]}</code>',
+          'Aritmética: <code>$((x + y))</code>, <code>$(( x++ ))</code>, <code>$(( 2**8 ))</code>',
+          'Condicionales: <code>[ -f archivo ]</code>, <code>[ -d carpeta ]</code>, <code>[ -z "$var" ]</code>, <code>[[ ]]</code> (bash extendido)',
+          'Bucles: <code>for i in {1..10}</code>, <code>for f in *.txt</code>, <code>while read line</code>, <code>while true; do</code>',
+          'Funciones: <code>function nombre() { local var=x; return 0; }</code>',
+          'Parámetros: <code>$1</code>-<code>$9</code>, <code>$@</code> (todos), <code>$#</code> (cantidad), <code>$?</code> (exit code), <code>$$</code> (PID propio)',
+          '<code>set -euo pipefail</code>: matar el script en el primer error — siempre al principio',
+          '<code>trap "rm -f /tmp/tmpfile" EXIT INT TERM</code>: limpiar al salir',
+          'Debugging: <code>bash -x script.sh</code> o <code>set -x</code>/<code>set +x</code> inline'
+        ],
+        practica:[
+          'Script de backup incremental: comprime carpeta con fecha, mantiene solo los 7 últimos, log por ejecución',
+          'Script de monitoreo: alerta si el uso de disco de alguna partición supera el 90%',
+          'Script que analice un access.log de nginx: top 10 IPs y top 10 endpoints más llamados'
+        ],
+        code:[{ lang:'bash', label:'Script de backup robusto con buenas prácticas', src:
+`#!/usr/bin/env bash
+# Backup incremental con rotación de 7 días
+set -euo pipefail
+trap 'echo "ERROR en línea $LINENO" >&2' ERR
+
+# ── Configuración ──────────────────────────────────────
+readonly SRC="\${1:-$HOME/documentos}"
+readonly DST="\${2:-/backup}"
+readonly MAX_BACKUPS=7
+readonly LOG="$DST/backup.log"
+readonly TS=\$(date +"%Y-%m-%d_%H-%M-%S")
+readonly DEST="$DST/backup_$TS.tar.gz"
+
+# ── Funciones ──────────────────────────────────────────
+log() { echo "[\$(date '+%H:%M:%S')] $*" | tee -a "$LOG"; }
+
+check_disk_space() {
+    local available
+    available=\$(df -BM "$DST" | awk 'NR==2 {gsub(/M/,"",$4); print $4}')
+    if [[ $available -lt 500 ]]; then
+        log "ERROR: Solo \${available}MB disponibles en $DST"
+        exit 1
+    fi
+}
+
+rotate_backups() {
+    local count
+    count=\$(find "$DST" -name "backup_*.tar.gz" | wc -l)
+    if [[ $count -ge \$MAX_BACKUPS ]]; then
+        find "$DST" -name "backup_*.tar.gz" | sort | head -n $(( count - MAX_BACKUPS + 1 )) | xargs rm -f
+        log "Backups antiguos eliminados (máx: $MAX_BACKUPS)"
+    fi
+}
+
+# ── Ejecución ──────────────────────────────────────────
+mkdir -p "$DST"
+log "Iniciando backup: $SRC → $DEST"
+check_disk_space
+rotate_backups
+
+tar czf "$DEST" --exclude="*.tmp" --exclude=".git" "$SRC" 2>/dev/null
+SIZE=$(du -sh "$DEST" | cut -f1)
+log "Backup completado: $DEST ($SIZE)"
+
+# Uso: ./backup.sh /home/usuario/docs /mnt/backup`
+        }]
+      },
+      { title:'Permisos, usuarios y administración del sistema', tag:'Sysadmin',
+        items:[
+          'Permisos Unix: lectura (r=4), escritura (w=2), ejecución (x=1) para owner/grupo/otros',
+          '<code>chmod 755</code>: owner puede todo; grupo y otros solo leer/ejecutar',
+          '<code>chown usuario:grupo archivo</code>: cambiar propietario y grupo',
+          '<code>ls -la</code>: ver permisos, propietario, tamaño, fecha — la primera columna explica todo',
+          'SUID (s en owner execute): ejecuta con permisos del propietario — base de privesc en hacking',
+          '<code>sudo</code>: ejecutar como root o como otro usuario — <code>/etc/sudoers</code> define quién puede qué',
+          'systemd: init PID 1, gestión de servicios, logging centralizado (journald)',
+          '<code>systemctl start/stop/restart/enable/disable/status/is-active</code>',
+          '<code>journalctl -u nginx -f</code>, <code>--since "1 hour ago"</code>, <code>-p err</code>',
+          'Cron: <code>crontab -e</code>, sintaxis: minuto hora día-mes mes día-semana comando',
+          'ufw: <code>ufw allow 22/tcp</code>, <code>ufw deny 80</code>, <code>ufw status verbose</code>',
+          'SSH: key-based auth, <code>~/.ssh/config</code>, <code>ProxyJump</code>, port forwarding (-L, -R, -D)'
+        ],
+        practica:[
+          'Configurar servidor Nginx desde cero: instalar, virtual host, abrir puertos con ufw',
+          'Crear cron job que ejecute script de limpieza cada domingo a las 3am con log',
+          'Configurar SSH key-based authentication y deshabilitar login por contraseña'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b6', label:'BLOQUE 6', title:'Fundamentos de Programación',
+  weeks:'5–6 sem', tipo:'Teórico + Práctico',
+  sections:[
+    { title:'Algoritmos, complejidad y estructuras de datos', topics:[
+      { title:'Algoritmos y notación Big O', tag:'Teoría base',
+        items:[
+          '¿Qué es un algoritmo? Finitud, claridad, efectividad, definición de entrada/salida',
+          'Pseudocódigo: escribir el algoritmo en lenguaje natural estructurado antes de codear',
+          'Diagramas de flujo: óvalos (inicio/fin), rombos (decisión), rectángulos (proceso)',
+          'Notación Big O: cómo crece el tiempo de ejecución al crecer la entrada n',
+          'O(1) constante: acceso array por índice — siempre tarda lo mismo',
+          'O(log n) logarítmica: búsqueda binaria — doblar la entrada solo añade 1 paso',
+          'O(n) lineal: recorrer un array — el tiempo crece proporcional al tamaño',
+          'O(n log n): merge sort, heapsort — los mejores algoritmos de ordenación general',
+          'O(n²) cuadrática: dos bucles anidados — empieza a ser lento con más de 10.000 elementos',
+          'O(2ⁿ) exponencial: recursividad sin memoización, subsets — inutilizable para n grande',
+          'Complejidad espacial: cuánta memoria adicional consume el algoritmo',
+          'Mejor caso, peor caso, caso promedio — cuál importa según el contexto del problema'
+        ],
+        practica:[
+          'Medir empíricamente: bubble sort vs merge sort en arrays de 100, 1.000, 10.000 elementos',
+          'Calcular la complejidad de tu propio código contando los bucles anidados',
+          'Implementar búsqueda lineal y binaria — comparar cuántos pasos necesita cada una'
+        ],
+        code:[{ lang:'python', label:'Medir complejidad empíricamente', src:
+`import time
+import random
+
+def busqueda_lineal(arr, objetivo):
+    for i, v in enumerate(arr):
+        if v == objetivo:
+            return i
+    return -1
+
+def busqueda_binaria(arr, objetivo):
+    izq, der = 0, len(arr) - 1
+    while izq <= der:
+        mid = (izq + der) // 2
+        if arr[mid] == objetivo:
+            return mid
+        elif arr[mid] < objetivo:
+            izq = mid + 1
+        else:
+            der = mid - 1
+    return -1
+
+# Comparar con distintos tamaños
+for n in [100, 1_000, 10_000, 100_000]:
+    arr = sorted(random.sample(range(n * 10), n))
+    objetivo = arr[-1]  # Peor caso: último elemento
+
+    t0 = time.perf_counter()
+    busqueda_lineal(arr, objetivo)
+    t_lineal = (time.perf_counter() - t0) * 1e6  # microsegundos
+
+    t0 = time.perf_counter()
+    busqueda_binaria(arr, objetivo)
+    t_binaria = (time.perf_counter() - t0) * 1e6
+
+    print(f"n={n:>7}: lineal={t_lineal:>8.2f}µs  binaria={t_binaria:>6.2f}µs")`
+        }]
+      },
+      { title:'Estructuras de datos fundamentales', tag:'Estructuras',
+        items:[
+          'Array estático: tamaño fijo, acceso O(1), inserción O(n) por desplazamiento',
+          'Array dinámico (lista/vector): amortiza el coste de crecer copiando y doblando',
+          'Stack (pila) LIFO: push, pop, peek — call stack, undo, balanceo de paréntesis',
+          'Queue (cola) FIFO: enqueue, dequeue — BFS, colas de tareas, buffers de red',
+          'Lista enlazada simple: nodos con dato + puntero siguiente — inserción O(1) al frente',
+          'Lista doblemente enlazada: punteros anterior Y siguiente — recorrer en ambos sentidos',
+          'Hash table: array + función hash — O(1) promedio; colisiones degradan a O(n)',
+          'Set: colección sin duplicados — operaciones de conjuntos (unión, intersección)',
+          'Árbol binario: raíz, nodos, hojas; recorrido in-order, pre-order, post-order',
+          'BST: búsqueda O(log n) en árbol balanceado — se degrada a O(n) si no se balancea',
+          'Min-heap: el elemento mínimo siempre en la raíz — implementa Priority Queue',
+          'Grafo: vértices y aristas, dirigido/no-dirigido, ponderado — representar por lista de adyacencia'
+        ],
+        practica:[
+          'Implementar desde cero en C: linked list con insert_front, delete, search, print_all, free_all',
+          'Calculadora postfija (RPN) usando una pila: "3 4 + 2 * 1 +" → 15',
+          'Implementar hashmap básico con chaining para manejar colisiones'
+        ]
+      }
+    ]},
+    { title:'Paradigmas de programación', topics:[
+      { title:'Paradigmas: imperativo, funcional, OOP, declarativo', tag:'Conceptual',
+        items:[
+          'Imperativo: especificar <strong>cómo</strong> — paso a paso, estado mutable',
+          'Procedural: imperativo + organización en funciones y procedimientos',
+          'OOP: modelar la realidad con objetos que tienen estado + comportamiento',
+          'Funcional: funciones puras, inmutabilidad, sin efectos secundarios',
+          'Función pura: mismo input → siempre mismo output, no modifica nada externo',
+          'Inmutabilidad: los datos no cambian, se crean nuevas versiones — facilita el razonamiento',
+          'Higher-order functions: map, filter, reduce — el núcleo del estilo funcional',
+          'Declarativo: especificar <strong>qué</strong>, no cómo — SQL, HTML, CSS',
+          'Reactivo: flujos de datos asincrónicos — RxJS, Signals en frameworks modernos',
+          'Multi-paradigma: Python, JavaScript, Kotlin combinan varios paradigmas',
+          'Cuándo usar cada uno: OOP para modelar entidades, funcional para transformaciones de datos'
+        ],
+        practica:[
+          'Resolver el mismo problema (duplicados en una lista) en imperativo, funcional y OOP',
+          'Implementar map, filter y reduce desde cero sin usar las funciones del lenguaje',
+          'Comparar un programa con estado mutable vs uno puramente funcional — cuál es más fácil de testear'
+        ],
+        code:[{ lang:'python', label:'El mismo problema en 3 paradigmas distintos', src:
+`# ── IMPERATIVO (paso a paso, estado mutable) ─────────────
+def duplicados_imperativo(nums):
+    vistos = []
+    duplicados = []
+    for n in nums:
+        if n in vistos and n not in duplicados:
+            duplicados.append(n)
+        else:
+            vistos.append(n)
+    return duplicados
+
+# ── FUNCIONAL (sin estado, sin bucles explícitos) ─────────
+from collections import Counter
+def duplicados_funcional(nums):
+    conteos = Counter(nums)
+    return list(filter(lambda x: conteos[x] > 1, set(nums)))
+
+# O más idiomático:
+def duplicados_funcional2(nums):
+    c = Counter(nums)
+    return [k for k, v in c.items() if v > 1]
+
+# ── OOP (objeto con estado y comportamiento) ──────────────
+class AnalizadorLista:
+    def __init__(self, datos):
+        self._datos = datos
+
+    @property
+    def duplicados(self):
+        c = Counter(self._datos)
+        return [k for k, v in c.items() if v > 1]
+
+    def __repr__(self):
+        return f"AnalizadorLista({self._datos})"
+
+# Prueba
+datos = [1, 2, 3, 2, 4, 3, 5]
+print(duplicados_imperativo(datos))   # [2, 3]
+print(duplicados_funcional(datos))    # [2, 3]
+print(AnalizadorLista(datos).duplicados)  # [2, 3]`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b7', label:'BLOQUE 7', title:'Lenguaje C',
+  weeks:'4–5 sem', tipo:'Práctico intensivo',
+  sections:[
+    { title:'C: el lenguaje que lo explica todo', topics:[
+      { title:'Compilación, preprocesador y tipos', tag:'C',
+        items:[
+          'Historia: Dennis Ritchie, Bell Labs, 1972 — creado para escribir el propio Unix',
+          'Por qué aprender C: Python, Java, iOS, el kernel de Linux — todos usan C internamente',
+          'Proceso de compilación: fuente → preprocesador → compilador → ensamblador → linker → ejecutable',
+          '<code>gcc -Wall -Wextra -Werror -o programa main.c</code> — siempre con warnings activadas',
+          'Makefile: targets, dependencias, reglas — automatizar la compilación',
+          'Preprocesador: <code>#include</code>, <code>#define</code>, <code>#ifdef/#endif</code>, <code>#pragma once</code>',
+          'Headers: <code>stdio.h</code> (printf/scanf), <code>stdlib.h</code> (malloc/free), <code>string.h</code> (strlen/strcpy)',
+          'Tipos básicos: <code>char</code> (1B), <code>int</code> (4B), <code>long</code> (8B), <code>float</code> (4B), <code>double</code> (8B)',
+          'sizeof: cuánto ocupa en bytes — puede variar según plataforma',
+          'Undefined Behavior (UB): el mayor peligro de C — no crashea, hace cosas impredecibles'
+        ],
+        practica:[
+          'Hola Mundo en C y analizar el ejecutable con <code>objdump -d</code>',
+          'Compilar con -O0, -O1, -O2, -O3 y medir diferencias de velocidad con time',
+          'Crear Makefile para proyecto multi-archivo con .c y .h separados'
+        ],
+        code:[{ lang:'c', label:'C: tipos, funciones y compilación básica', src:
+`// fundamentos.c — gcc -Wall -Wextra -o fundamentos fundamentos.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Función: suma dos enteros, retorna el resultado
+int suma(int a, int b) {
+    return a + b;
+}
+
+// Función: factorial recursivo
+long factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+// Función: invertir una cadena IN PLACE
+void invertir(char *s) {
+    int izq = 0, der = (int)strlen(s) - 1;
+    while (izq < der) {
+        char tmp = s[izq];
+        s[izq] = s[der];
+        s[der] = tmp;
+        izq++; der--;
+    }
+}
+
+int main(void) {
+    printf("suma(3,4) = %d\n", suma(3, 4));
+    printf("10!       = %ld\n", factorial(10));
+
+    // sizeof — tamaños reales en tu plataforma
+    printf("char=%zu  int=%zu  long=%zu  double=%zu (bytes)\n",
+           sizeof(char), sizeof(int), sizeof(long), sizeof(double));
+
+    // Strings en C son arrays de char terminados en '\0'
+    char saludo[] = "Hola mundo";
+    printf("Original: %s\n", saludo);
+    invertir(saludo);
+    printf("Invertido: %s\n", saludo);
+
+    return 0;
+}`
+        }]
+      },
+      { title:'Punteros y gestión de memoria dinámica', tag:'C — Core',
+        items:[
+          'Puntero: variable que almacena una dirección de memoria — no un valor, sino <em>dónde</em> está el valor',
+          '<code>&x</code>: dirección de memoria donde vive la variable x',
+          '<code>*ptr</code>: desreferencia — accede al valor en la dirección almacenada en ptr',
+          'Aritmética de punteros: <code>ptr + 1</code> avanza <code>sizeof(tipo)</code> bytes',
+          'Arrays y punteros: el nombre del array ES un puntero a su primer elemento',
+          'Puntero nulo: <code>NULL</code> — siempre inicializar punteros a NULL',
+          'Stack: variables locales, destruidas automáticamente al salir de la función',
+          'Heap: memoria dinámica con malloc/calloc/realloc/free — persiste hasta que la liberes',
+          '<strong>malloc</strong>: reserva bytes sin inicializar — SIEMPRE verificar que no retorne NULL',
+          '<strong>calloc</strong>: reserva e inicializa a 0 — más seguro',
+          '<strong>free</strong>: liberar memoria — olvidarlo = memory leak, filtración de memoria',
+          '<strong>Double free</strong>: liberar el mismo bloque dos veces — comportamiento indefinido, crash probable',
+          '<strong>Use-after-free</strong>: usar un puntero después de free() — vulnerabilidad de seguridad gravísima',
+          '<strong>Buffer overflow</strong>: escribir más allá del final de un array — vulnerabilidad más clásica de C',
+          'Valgrind: detectar memory leaks y accesos inválidos en tiempo de ejecución',
+          'AddressSanitizer: compilar con <code>-fsanitize=address</code> — más rápido que Valgrind'
+        ],
+        practica:[
+          'Demostrar aritmética de punteros: imprimir valor y dirección de cada elemento del array',
+          'Provocar intencionalmente buffer overflow, use-after-free, double free — observar con ASan',
+          'Detectar un memory leak con Valgrind en un programa pequeño'
+        ],
+        code:[{ lang:'c', label:'Punteros, memoria dinámica y lista enlazada', src:
+`#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// ── Demostración de punteros ──────────────────────────────
+void demo_punteros(void) {
+    int x = 42;
+    int *ptr = &x;        // ptr apunta a x
+
+    printf("Valor de x:      %d\n", x);
+    printf("Dirección de x:  %p\n", (void*)&x);
+    printf("Valor de ptr:    %p\n", (void*)ptr);   // igual que &x
+    printf("Valor en *ptr:   %d\n", *ptr);          // igual que x
+
+    *ptr = 100;           // modifica x a través del puntero
+    printf("x después de *ptr=100: %d\n", x);
+
+    // Aritmética de punteros
+    int arr[5] = {10, 20, 30, 40, 50};
+    int *p = arr;         // apunta al primer elemento
+    for (int i = 0; i < 5; i++)
+        printf("arr[%d] = %d  (en %p)\n", i, *(p + i), (void*)(p + i));
+}
+
+// ── Lista enlazada con memoria dinámica ──────────────────
+typedef struct Nodo {
+    int dato;
+    struct Nodo *siguiente;
+} Nodo;
+
+Nodo *crear_nodo(int dato) {
+    Nodo *n = malloc(sizeof(Nodo));
+    if (!n) { fprintf(stderr, "Error: malloc falló\n"); exit(1); }
+    n->dato = dato;
+    n->siguiente = NULL;
+    return n;
+}
+
+void insertar_frente(Nodo **cabeza, int dato) {
+    Nodo *nuevo = crear_nodo(dato);
+    nuevo->siguiente = *cabeza;
+    *cabeza = nuevo;
+}
+
+void imprimir_lista(Nodo *cabeza) {
+    for (Nodo *p = cabeza; p; p = p->siguiente)
+        printf("%d → ", p->dato);
+    printf("NULL\n");
+}
+
+void liberar_lista(Nodo **cabeza) {
+    Nodo *actual = *cabeza;
+    while (actual) {
+        Nodo *siguiente = actual->siguiente;
+        free(actual);     // liberar cada nodo
+        actual = siguiente;
+    }
+    *cabeza = NULL;       // prevenir use-after-free
+}
+
+int main(void) {
+    demo_punteros();
+    printf("\n--- Lista enlazada ---\n");
+
+    Nodo *lista = NULL;
+    insertar_frente(&lista, 30);
+    insertar_frente(&lista, 20);
+    insertar_frente(&lista, 10);
+    imprimir_lista(lista);   // 10 → 20 → 30 → NULL
+    liberar_lista(&lista);   // SIEMPRE liberar al final
+    return 0;
+}`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b8', label:'BLOQUE 8', title:'POO y Diseño de Software',
+  weeks:'3–4 sem', tipo:'Conceptual + Práctico',
+  sections:[
+    { title:'Pilares y principios de diseño', topics:[
+      { title:'Los 4 pilares de la POO', tag:'POO',
+        items:[
+          '<strong>Encapsulación</strong>: agrupar datos + comportamiento; ocultar la implementación interna',
+          'Modificadores de acceso: private (solo la clase), protected (clase + subclases), public (todos)',
+          'Invariantes de clase: reglas que el objeto siempre debe cumplir — el constructor las garantiza',
+          '<strong>Herencia</strong>: relación IS-A — un Perro ES UN Animal',
+          'Sobreescritura (override): redefinir un método heredado con comportamiento específico de la subclase',
+          'Problema del diamante: herencia múltiple genera ambigüedad — Java lo evita con interfaces',
+          '<strong>Polimorfismo</strong> en compilación: sobrecarga de métodos (mismo nombre, distintos parámetros)',
+          '<strong>Polimorfismo</strong> en ejecución: dynamic dispatch — el tipo <em>real</em> del objeto decide qué método corre',
+          '<strong>Abstracción</strong>: exponer solo lo necesario, ocultar la complejidad — simplifica el uso',
+          'Clases abstractas: no se instancian, definen una plantilla con métodos sin implementar',
+          'Interfaces: contrato puro — solo firmas de métodos, sin estado (en la mayoría de lenguajes)',
+          '<strong>Composición vs herencia</strong>: has-a es más flexible que is-a — preferir composición cuando sea posible'
+        ],
+        practica:[
+          'Modelar un zoo: Animal (abstracto), Mamífero, Ave, Reptil con métodos polimórficos',
+          'Lista<Animal> que contiene Perros y Gatos — llamar speak() en cada uno y ver dynamic dispatch',
+          'Refactorizar herencia profunda (5 niveles) a composición en un ejemplo real'
+        ],
+        code:[{ lang:'java', label:'POO en Java: herencia, polimorfismo y abstracción', src:
+`// Animal.java — clase abstracta base
+abstract class Animal {
+    protected String nombre;
+    protected int edad;
+
+    public Animal(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad   = edad;
+    }
+
+    // Método abstracto: cada subclase DEBE implementarlo
+    public abstract String hacerSonido();
+
+    // Método concreto: comportamiento común
+    public String describir() {
+        return String.format("%s (%s, %d años)", nombre, getClass().getSimpleName(), edad);
+    }
+}
+
+class Perro extends Animal {
+    private String raza;
+
+    public Perro(String nombre, int edad, String raza) {
+        super(nombre, edad);    // llama al constructor del padre
+        this.raza = raza;
+    }
+
+    @Override
+    public String hacerSonido() { return "¡Guau!"; }
+
+    @Override
+    public String describir() {
+        return super.describir() + " - " + raza;
+    }
+}
+
+class Gato extends Animal {
+    public Gato(String nombre, int edad) { super(nombre, edad); }
+
+    @Override
+    public String hacerSonido() { return "¡Miau!"; }
+}
+
+// Main — polimorfismo en acción
+public class ZooDemo {
+    public static void main(String[] args) {
+        // Lista de Animals que contiene Perros y Gatos
+        Animal[] zoo = {
+            new Perro("Rex", 3, "Pastor Alemán"),
+            new Gato("Luna", 5),
+            new Perro("Buddy", 2, "Labrador")
+        };
+
+        // Dynamic dispatch: el tipo real decide qué hacerSonido() se llama
+        for (Animal a : zoo) {
+            System.out.println(a.describir() + " → " + a.hacerSonido());
+        }
+    }
+}`
+        }]
+      },
+      { title:'SOLID y patrones de diseño', tag:'Diseño',
+        items:[
+          '<strong>S</strong> Single Responsibility: una clase, una razón para cambiar',
+          '<strong>O</strong> Open/Closed: abierto a extensión (subclases), cerrado a modificación de la clase base',
+          '<strong>L</strong> Liskov Substitution: una subclase puede reemplazar a su padre sin romper el programa',
+          '<strong>I</strong> Interface Segregation: interfaces pequeñas y específicas mejor que una enorme',
+          '<strong>D</strong> Dependency Inversion: depender de abstracciones (interfaces), no de implementaciones',
+          'Inyección de dependencias: pasar las dependencias por constructor, no crearlas dentro de la clase',
+          '<strong>Singleton</strong>: única instancia — y por qué se considera anti-pattern en tests',
+          '<strong>Factory Method</strong>: delegar la creación de objetos a una subclase o método',
+          '<strong>Builder</strong>: construir objetos complejos paso a paso — encadenamiento fluido',
+          '<strong>Observer</strong>: suscribirse a cambios — cuando un objeto cambia, notifica a sus observadores',
+          '<strong>Strategy</strong>: encapsular algoritmos intercambiables — seleccionar en runtime',
+          '<strong>Decorator</strong>: añadir comportamiento en runtime sin herencia',
+          '<strong>Repository</strong>: abstraer el acceso a datos — la lógica de negocio no sabe si usas SQL o MongoDB'
+        ],
+        practica:[
+          'Implementar Observer para notificaciones de e-commerce (pedido confirmado, enviado, entregado)',
+          'Usar Strategy para distintos algoritmos de descuento en un carrito de compra',
+          'Refactorizar código con if/switch por tipo a polimorfismo (violación de OCP)'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b9', label:'BLOQUE 9', title:'Java',
+  weeks:'5–6 sem', tipo:'Práctico',
+  sections:[
+    { title:'La plataforma Java y el lenguaje moderno', topics:[
+      { title:'JVM, colecciones y Streams', tag:'Java',
+        items:[
+          'JVM: bytecode portable — "write once, run anywhere"',
+          'JIT compiler: convierte bytecode a código máquina en tiempo de ejecución',
+          'Garbage Collector: G1GC, ZGC, Shenandoah — gestión automática de memoria',
+          'JDK vs JRE: JDK incluye el compilador; JRE solo el runtime',
+          'Versiones LTS: Java 8 (aún muy usado), 11, 17, 21',
+          'Maven: <code>pom.xml</code>, ciclo de vida (compile, test, package, deploy)',
+          'Collections Framework: ArrayList, LinkedList, HashMap, TreeMap, HashSet, PriorityQueue',
+          'Generics: <code>List<String></code> — seguridad de tipos en tiempo de compilación',
+          'Stream API: <code>filter, map, sorted, distinct, limit, collect</code>',
+          'Optional<T>: alternativa segura a null — eliminar NullPointerException',
+          'Lambdas y method references: <code>String::toUpperCase</code>, <code>x -> x * 2</code>',
+          'Records (Java 16+): <code>record Punto(int x, int y) {}</code> — inmutabilidad automática',
+          'Pattern matching (Java 16+): <code>if (obj instanceof String s) { ... }</code>'
+        ],
+        practica:[
+          'Sistema de biblioteca: Libro, Usuario, Préstamo con búsqueda por autor/ISBN con Streams',
+          'Ranking con PriorityQueue y TreeMap: insertar, top-N, actualizar puntuaciones',
+          'Reescribir el mismo programa con forEach/streams vs imperativo clásico — comparar legibilidad'
+        ],
+        code:[{ lang:'java', label:'Java moderno: Streams, Optional y Records', src:
+`import java.util.*;
+import java.util.stream.*;
+
+// Records: clases de datos inmutables con una línea (Java 16+)
+record Producto(String nombre, double precio, String categoria) {}
+
+public class JavaModerno {
+    public static void main(String[] args) {
+        List<Producto> catalogo = List.of(
+            new Producto("Laptop",    1200.0, "Electrónica"),
+            new Producto("Teclado",     45.0, "Electrónica"),
+            new Producto("Silla",      250.0, "Oficina"),
+            new Producto("Monitor",   350.0, "Electrónica"),
+            new Producto("Cuaderno",    5.0, "Papelería")
+        );
+
+        // Stream: filtrar, ordenar y recoger
+        List<String> caros = catalogo.stream()
+            .filter(p -> p.precio() > 100)
+            .sorted(Comparator.comparingDouble(Producto::precio).reversed())
+            .map(p -> String.format("%-10s €%.2f", p.nombre(), p.precio()))
+            .collect(Collectors.toList());
+
+        System.out.println("Productos > 100€ (caros primero):");
+        caros.forEach(System.out::println);
+
+        // Agrupar por categoría
+        Map<String, List<Producto>> porCategoria = catalogo.stream()
+            .collect(Collectors.groupingBy(Producto::categoria));
+        porCategoria.forEach((cat, prods) ->
+            System.out.println(cat + ": " + prods.size() + " productos"));
+
+        // Optional: el promedio puede no existir (lista vacía)
+        OptionalDouble promedio = catalogo.stream()
+            .mapToDouble(Producto::precio)
+            .average();
+        promedio.ifPresentOrElse(
+            avg -> System.out.printf("Precio medio: €%.2f%n", avg),
+            ()  -> System.out.println("Sin productos")
+        );
+    }
+}`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b10', label:'BLOQUE 10', title:'JavaScript',
+  weeks:'5–6 sem', tipo:'Práctico intensivo',
+  sections:[
+    { title:'El lenguaje en profundidad', topics:[
+      { title:'JS internals: event loop, closures y prototipos', tag:'JavaScript',
+        items:[
+          'Historia: Brendan Eich, 10 días en Netscape, 1995 — el nombre fue marketing puro',
+          'ECMAScript: ES5 (2009), ES6/2015 (el gran salto), ESNext anual desde entonces',
+          'V8 (Chrome/Node), SpiderMonkey (Firefox), JavaScriptCore (Safari)',
+          'Single-threaded: un solo hilo — nunca bloquear con trabajo pesado en el hilo principal',
+          'El event loop: call stack + callback queue + microtask queue — el mecanismo central',
+          'Microtasks (Promises, queueMicrotask): se ejecutan ANTES que las macrotasks (setTimeout)',
+          'var vs let vs const: hoisting de var a nivel función, temporal dead zone de let/const',
+          'Coerciones: <code>0 == ""</code> es true, <code>0 === ""</code> es false — SIEMPRE usar ===',
+          'Truthy/falsy: false, 0, "", null, undefined, NaN son falsy — todo lo demás es truthy',
+          'Closures: función que recuerda el scope léxico donde fue creada — base de muchos patrones',
+          'this: depende de cómo se llama la función — global, método, constructor, arrow function',
+          'Arrow functions: no tienen su propio this ni arguments — heredan del scope exterior',
+          'Prototype chain: herencia JS antes de las clases — __proto__ sigue ahí debajo',
+          'ES Modules: import/export estático — diferente a CommonJS require() que es dinámico'
+        ],
+        practica:[
+          'Demostrar el event loop: setTimeout(0ms) vs Promise.resolve() — ¿cuál va primero?',
+          'El bug clásico del closure en bucle con var — crear 10 closures y ver el resultado',
+          'Implementar herencia prototípica sin class y comparar con la versión class'
+        ],
+        code:[{ lang:'javascript', label:'Event loop, closures y el bug del bucle con var', src:
+`// ── Event Loop: microtasks vs macrotasks ────────────────
+console.log('1: síncrono');
+
+setTimeout(() => console.log('2: setTimeout (macrotask)'), 0);
+
+Promise.resolve()
+  .then(() => console.log('3: Promise.then (microtask)'));
+
+queueMicrotask(() => console.log('4: queueMicrotask'));
+
+console.log('5: síncrono');
+// Salida: 1 → 5 → 3 → 4 → 2
+// Las microtasks (3,4) van ANTES del setTimeout (2)
+
+// ── Bug del closure con var en bucle ─────────────────────
+console.log('\n--- BUG: var en bucle ---');
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log('var i =', i), 0);  // imprime 3, 3, 3 !!
+}
+
+console.log('--- FIX: let en bucle ---');
+for (let j = 0; j < 3; j++) {
+  setTimeout(() => console.log('let j =', j), 0);  // imprime 0, 1, 2 ✓
+}
+
+// ── Closures: un contador con estado privado ─────────────
+function crearContador(inicio = 0) {
+  let cuenta = inicio;           // variable privada (en el closure)
+  return {
+    incrementar: ()  => ++cuenta,
+    decrementar: ()  => --cuenta,
+    valor:       ()  => cuenta,
+    reset:       ()  => { cuenta = inicio; }
+  };
+}
+
+const c = crearContador(10);
+console.log(c.incrementar()); // 11
+console.log(c.incrementar()); // 12
+console.log(c.decrementar()); // 11
+console.log(c.valor());       // 11`
+        }]
+      },
+      { title:'Async/await, Promises y Node.js', tag:'JavaScript async',
+        items:[
+          'El problema: I/O es lento — no podemos bloquear el hilo esperando una respuesta',
+          'Callbacks: el patrón original — Node-style: <code>function(err, data)</code>',
+          'Callback hell: anidamiento infinito — ilegible e imposible de mantener',
+          'Promises: estado pending → fulfilled/rejected — encadenables con .then/.catch/.finally',
+          '<code>Promise.all()</code>: esperar todas — falla si falla una',
+          '<code>Promise.allSettled()</code>: esperar todas sin fallar aunque alguna rechace',
+          '<code>Promise.race()</code>: la primera que resuelva o rechace gana',
+          '<code>async function</code>: retorna siempre una Promise, aunque no lo parezca',
+          '<code>await</code>: pausa la función async hasta que la Promise resuelva',
+          'try/catch con async/await para manejar errores de forma legible',
+          'Node.js: V8 + libuv (event loop en C) — no es navegador, no tiene DOM',
+          'npm: gestor de paquetes, package.json, semver, package-lock.json',
+          'Core modules de Node: fs, path, os, http, crypto, events, stream, child_process',
+          'Streams: Readable, Writable, Transform — manejar grandes volúmenes sin cargar en memoria'
+        ],
+        practica:[
+          'Convertir una cadena de callbacks anidados a Promises y luego a async/await',
+          'Promise.all para hacer 5 fetch en paralelo y mostrar todos los resultados juntos',
+          'Servidor HTTP puro (sin Express) que maneje GET /usuarios y POST /usuarios'
+        ],
+        code:[{ lang:'javascript', label:'Evolución: callbacks → Promises → async/await', src:
+`// ── Callbacks (el origen) ───────────────────────────────
+const fs = require('fs');
+
+// Callback hell: anidar es una pesadilla
+fs.readFile('a.txt', 'utf8', (err, dataA) => {
+  if (err) return console.error(err);
+  fs.readFile('b.txt', 'utf8', (err, dataB) => {
+    if (err) return console.error(err);
+    fs.writeFile('resultado.txt', dataA + dataB, (err) => {
+      if (err) return console.error(err);
+      console.log('Listo');          // ← callback hell
+    });
+  });
+});
+
+// ── Promises (mucho mejor) ──────────────────────────────
+const fsp = require('fs').promises;
+
+fsp.readFile('a.txt', 'utf8')
+  .then(dataA => fsp.readFile('b.txt', 'utf8').then(dataB => dataA + dataB))
+  .then(contenido => fsp.writeFile('resultado.txt', contenido))
+  .then(() => console.log('Listo'))
+  .catch(err => console.error('Error:', err));
+
+// ── Async/await (lo más legible) ────────────────────────
+async function combinarArchivos() {
+  try {
+    const [dataA, dataB] = await Promise.all([
+      fsp.readFile('a.txt', 'utf8'),
+      fsp.readFile('b.txt', 'utf8')   // ambos se leen EN PARALELO
+    ]);
+    await fsp.writeFile('resultado.txt', dataA + dataB);
+    console.log('Listo');
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
+}
+
+// ── Retry con backoff exponencial ──────────────────────
+async function fetchConRetry(url, maxIntentos = 3) {
+  for (let intento = 1; intento <= maxIntentos; intento++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+      return await res.json();
+    } catch (err) {
+      if (intento === maxIntentos) throw err;
+      const espera = 2 ** intento * 100;   // 200ms, 400ms, 800ms...
+      console.log(\`Reintento \${intento}/\${maxIntentos} en \${espera}ms...\`);
+      await new Promise(r => setTimeout(r, espera));
+    }
+  }
+}`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b11', label:'BLOQUE 11', title:'Rust',
+  weeks:'6–7 sem', tipo:'Alta curva de aprendizaje',
+  sections:[
+    { title:'Ownership, tipos y el ecosistema Cargo', topics:[
+      { title:'El sistema de Ownership y Borrowing', tag:'Rust — Core',
+        items:[
+          'El problema que Rust resuelve: seguridad de memoria sin garbage collector',
+          '<strong>Regla 1</strong>: cada valor tiene exactamente un propietario (owner)',
+          '<strong>Regla 2</strong>: cuando el owner sale de scope, el valor se destruye (drop automático)',
+          'Move semantics: <code>let y = x</code> transfiere la propiedad — x ya no es válido',
+          'Copy types: i32, bool, char, f64, tuples de Copy — se copian sin mover',
+          'Clone: copia explícita de tipos heap — <code>let y = x.clone()</code>',
+          'Referencias inmutables <code>&T</code>: puedes tener muchas a la vez',
+          'Referencias mutables <code>&mut T</code>: solo UNA a la vez, sin coexistir con inmutables',
+          'El borrow checker: el compilador verifica todas estas reglas en tiempo de compilación — no en runtime',
+          'Lifetimes: garantizan que ninguna referencia outlive el dato al que apunta',
+          '<code>\'static</code>: el lifetime que dura todo el programa'
+        ],
+        practica:[
+          'Provocar 5 errores distintos del borrow checker y analizar los mensajes',
+          'Función que tome &str y retorne &str (substring) — necesita lifetime explícito',
+          'Comparar: mismo programa en C (malloc/free) vs Rust — qué garantiza cada uno'
+        ],
+        code:[{ lang:'rust', label:'Rust: ownership, borrowing y el borrow checker', src:
+`fn main() {
+    // ── MOVE SEMANTICS ────────────────────────────────────
+    let s1 = String::from("hola");
+    let s2 = s1;          // s1 se mueve a s2 — s1 ya NO existe
+    // println!("{}", s1); // ERROR: value used after move
+    println!("{}", s2);   // OK
+
+    // Clone: copia explícita si necesitas ambas variables
+    let a = String::from("mundo");
+    let b = a.clone();    // ambas variables son válidas
+    println!("{} {}", a, b);
+
+    // ── BORROWING ──────────────────────────────────────────
+    let s = String::from("hola mundo");
+    let largo = calcular_largo(&s);   // prestamos (borrow) s
+    println!("'{}' tiene {} caracteres", s, largo);  // s sigue siendo válida
+
+    // ── BORROW CHECKER EN ACCIÓN ───────────────────────────
+    let mut v = vec![1, 2, 3];
+    let primera = &v[0];         // referencia inmutable
+    // v.push(4);                // ERROR: no puedes mutar mientras hay borrow inmutable
+    println!("primera: {}", primera);  // el borrow termina aquí
+    v.push(4);                   // ahora sí — el borrow ya no existe
+    println!("vector: {:?}", v);
+}
+
+fn calcular_largo(s: &str) -> usize {
+    s.chars().count()   // tomamos una referencia, no la propiedad
+}
+
+// Lifetimes explícitos: el resultado vive tanto como el input más corto
+fn primer_palabra<'a>(s: &'a str) -> &'a str {
+    let bytes = s.as_bytes();
+    for (i, &byte) in bytes.iter().enumerate() {
+        if byte == b' ' { return &s[..i]; }
+    }
+    s
+}`
+        }]
+      },
+      { title:'Enums, Result, Traits y Cargo', tag:'Rust',
+        items:[
+          'Enums con datos: <code>enum Mensaje { Mover{x:i32,y:i32}, Escribir(String) }</code>',
+          'Pattern matching: exhaustivo, el compilador obliga a manejar todos los casos',
+          '<code>Option<T></code>: <code>Some(valor)</code> o <code>None</code> — el fin del null pointer en Rust',
+          '<code>Result<T, E></code>: <code>Ok(valor)</code> o <code>Err(error)</code> — errores sin excepciones',
+          'El operador <code>?</code>: propagar errores automáticamente — azúcar sobre match Err',
+          'Traits: comportamiento compartido — similar a interfaces pero más poderosos',
+          'Traits std importantes: Debug, Display, Clone, Copy, Iterator, From/Into, Deref',
+          '<code>Box<T></code>: heap cuando el tamaño no se conoce en compilación',
+          '<code>Arc<Mutex<T>></code>: compartir estado mutable entre hilos de forma segura',
+          'Cargo.toml: dependencias, features, workspaces',
+          'Crates esenciales: serde, tokio, reqwest, clap, anyhow, rayon, regex'
+        ],
+        practica:[
+          'Interpretar comandos con un enum y match exhaustivo',
+          'CLI con clap: conversor de unidades con subcomandos (temp, dist, peso)',
+          'Servidor async con Tokio y axum: CRUD en memoria con GET/POST/DELETE'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b12', label:'BLOQUE 12', title:'Desarrollo Web',
+  weeks:'8–10 sem', tipo:'Proyecto continuo',
+  sections:[
+    { title:'Frontend: HTML, CSS, JavaScript en el navegador', topics:[
+      { title:'HTML semántico y CSS moderno', tag:'Frontend',
+        items:[
+          'Semántica HTML5: header, nav, main, article, section, aside, footer, figure, time, details',
+          'Formularios completos: todos los tipos de input, validación, accesibilidad (label + id)',
+          'Atributos modernos: required, pattern, autocomplete, loading="lazy", srcset para imágenes',
+          'ARIA: roles, estados (aria-expanded, aria-selected) y propiedades (aria-label, aria-live)',
+          'El modelo de caja CSS: content, padding, border, margin — siempre usar box-sizing:border-box',
+          'Especificidad CSS: inline > id > class/pseudo > element — cómo ganar sin recurrir a !important',
+          'Custom Properties: <code>--color-primary: #8b7ff7</code> en :root, herencia, fallbacks con var()',
+          'Flexbox: justify-content, align-items, flex-grow/shrink/basis, gap',
+          'CSS Grid: grid-template-columns, auto-fill con minmax, named areas, subgrid',
+          'Responsive: mobile-first, media queries, container queries (@container)',
+          'Fluid typography: <code>clamp(1rem, 2.5vw, 2rem)</code> — escala suave sin breakpoints',
+          'Animaciones: @keyframes, animation, transitions, scroll-driven animations'
+        ],
+        practica:[
+          'Recrear la página de Wikipedia con solo HTML semántico y CSS — sin frameworks',
+          'Hacer esa página completamente responsive con mobile-first',
+          'Usar DevTools para "hackear" visualmente cualquier web pública y aprender CSS real'
+        ]
+      },
+      { title:'React: el framework dominante del frontend', tag:'React',
+        items:[
+          'Por qué React: el problema de sincronizar la UI con el estado de forma eficiente',
+          'Virtual DOM: diffing algorithm — minimizar las mutaciones reales del DOM',
+          'JSX: syntactic sugar sobre React.createElement() — no es HTML, es JS',
+          'Componentes funcionales: la única forma moderna (hooks desde React 16.8)',
+          'Props: flujo unidireccional padre → hijo — inmutables en el hijo',
+          'useState: estado local, inmutabilidad, batching de updates en React 18',
+          'useEffect: efectos secundarios después del render — cleanup function fundamental',
+          'useContext: estado compartido sin prop drilling para casos simples',
+          'useReducer: estado complejo con acciones — patrón Redux local',
+          'useMemo y useCallback: optimización de renders — no usar prematuramente',
+          'useRef: referenciar el DOM directamente o persistir valores sin re-render',
+          'Custom hooks: extraer lógica stateful reutilizable',
+          'React Router v6: createBrowserRouter, useNavigate, useParams, Outlet, loader/action',
+          'TanStack Query: fetching, caching y sincronización del estado del servidor',
+          'Zustand: estado global sin boilerplate'
+        ],
+        practica:[
+          'App del clima: fetch a OpenWeatherMap, custom hook useFetch, loading/error states',
+          'To-do list completa: CRUD, filtros, persistencia en localStorage, optimistic updates',
+          'Integrar React Router + TanStack Query en un proyecto de 3 páginas'
+        ]
+      }
+    ]},
+    { title:'Backend, bases de datos y despliegue', topics:[
+      { title:'Node.js + Express + PostgreSQL + Docker', tag:'Backend',
+        items:[
+          'Arquitectura en capas: routes → controllers → services → repositories → database',
+          'Middleware Express: express.json(), cors(), helmet(), morgan(), rate-limit',
+          'Validación con Zod: schemas tipados, parse, safeParse, transformaciones en un paso',
+          'Autenticación JWT: generar en login, verificar en cada request, refresh en HTTP-only cookie',
+          'bcrypt: <code>hash(password, 12)</code> — el 12 es el cost factor (lento intencionalmente)',
+          'RBAC: middleware que verifica el rol del usuario antes de cada endpoint protegido',
+          'PostgreSQL: CREATE TABLE, relaciones FK, índices, transacciones BEGIN/COMMIT/ROLLBACK',
+          'Prisma ORM: schema.prisma, migrate dev, prisma.$queryRaw para SQL complejo',
+          'El problema N+1: una query genera N queries adicionales — resolver con include/join',
+          'Redis: caché de queries costosas, sesiones, rate limiting por IP',
+          'WebSockets con Socket.io: eventos bidireccionales en tiempo real',
+          'Testing: Jest + Supertest para tests de integración de endpoints',
+          'OpenAPI/Swagger: documentación automática de la API'
+        ],
+        practica:[
+          'Proyecto full-stack: Red Social mínima — auth, posts, follows, feed, comentarios',
+          'Añadir notificaciones en tiempo real con WebSockets al recibir un like',
+          'Despliegue: Railway (backend) + Vercel (frontend) + Supabase (PostgreSQL)'
+        ]
+      }
+    ]}
+  ]
+},
+{
+  id:'b13', label:'BLOQUE 13', title:'Git, Docker y CI/CD',
+  weeks:'2–3 sem', tipo:'Práctico',
+  sections:[
+    { title:'Git y flujos de trabajo profesionales', topics:[
+      { title:'Git internals y comandos avanzados', tag:'Git',
+        items:[
+          'DAG (Directed Acyclic Graph): cómo Git almacena la historia como un grafo',
+          'Objects internos: blob (contenido), tree (directorio), commit, tag — todos identificados por SHA-1',
+          'git add -p: stage cambios por hunk (fragmento), no por archivo completo',
+          'git commit --amend: modificar el último commit — solo antes de hacer push',
+          'git rebase -i: squash, fixup, reorder, editar mensajes de commits pasados',
+          'Merge vs rebase: cuándo usar cada uno — regla de oro: nunca rebase lo ya pusheado',
+          'git bisect: búsqueda binaria en la historia para encontrar el commit que rompió algo',
+          'git reflog: historial de todo lo que apuntó HEAD — el salvavidas para recuperar trabajo perdido',
+          'git stash: guardar cambios sin commitear temporalmente',
+          'git cherry-pick: aplicar un commit específico en otra rama',
+          'Conventional Commits: feat:, fix:, chore:, docs:, refactor: — estandarizar mensajes',
+          'Git hooks: pre-commit (lint), commit-msg (convención), pre-push (tests)'
+        ],
+        practica:[
+          'Usar git bisect para encontrar en qué commit se introdujo un bug en un repo con 20 commits',
+          'Configurar husky + lint-staged para correr el linter automáticamente en cada commit',
+          'Simular y resolver un merge conflict entre dos ramas con cambios en las mismas líneas'
+        ],
+        code:[{ lang:'bash', label:'Git: flujo diario y comandos avanzados', src:
+`# ── Flujo diario profesional ─────────────────────────────
+git switch -c feature/nueva-funcionalidad   # crear rama desde main
+# ... trabajar ...
+git add -p                                  # staging selectivo por hunk
+git commit -m "feat: añadir búsqueda de usuarios"
+git push -u origin feature/nueva-funcionalidad
+
+# ── Rebase interactivo: limpiar historial antes del PR ────
+git rebase -i HEAD~4   # interactuar con los últimos 4 commits
+# En el editor:
+# pick   a1b2c3 feat: borrador inicial
+# squash d4e5f6 fix: corrección de typo        ← fusionar con anterior
+# squash 7g8h9i chore: quitar console.logs    ← fusionar con anterior
+# reword j0k1l2 refactor: renombrar variable   ← solo cambiar mensaje
+
+# ── Bisect: encontrar el commit que rompió algo ──────────
+git bisect start
+git bisect bad HEAD          # el bug existe en el commit actual
+git bisect good v1.0.0       # el bug no existía en v1.0.0
+# Git hace checkout a commits intermedios...
+# Pruebas tu código, dices:
+git bisect good              # este commit está bien
+git bisect bad               # este commit está roto
+# Git encuentra el commit exacto que introdujo el bug
+
+# ── Configuración útil de .gitconfig ─────────────────────
+git config --global alias.lg \
+  "log --oneline --graph --decorate --all"
+git config --global alias.undo \
+  "reset --soft HEAD~1"   # deshacer último commit sin perder cambios`
+        }]
+      }
+    ]},
+    { title:'Docker y CI/CD', topics:[
+      { title:'Docker: contenedores en la práctica', tag:'DevOps',
+        items:[
+          'El problema: "en mi máquina funciona" → Docker da reproducibilidad total',
+          'Contenedores vs VMs: comparten el kernel del host — mucho más ligeros y rápidos',
+          'Imágenes: capas inmutables (layers), union filesystem — cada instrucción Dockerfile es una capa',
+          'Dockerfile completo: FROM, ARG, ENV, RUN, COPY, WORKDIR, USER, EXPOSE, VOLUME, CMD, ENTRYPOINT',
+          'Multi-stage builds: compilar en imagen grande, copiar solo el binario a imagen mínima (alpine/distroless)',
+          'CMD vs ENTRYPOINT: CMD es el comando por defecto (sobreescribible), ENTRYPOINT fija el ejecutable',
+          'Docker Compose: definir el stack completo (app, db, redis, etc.) en YAML',
+          'Volúmenes: persistir datos fuera del contenedor — bind mounts vs named volumes',
+          'Healthcheck: verificar que el contenedor está realmente funcionando, no solo corriendo',
+          'Seguridad: no correr como root, usar USER no-root, escanear con Trivy, .dockerignore',
+          'Registros: Docker Hub, GitHub Container Registry (ghcr.io), AWS ECR'
+        ],
+        practica:[
+          'Dockerizar el proyecto full-stack: 3 contenedores (frontend, backend, postgres) con Compose',
+          'Multi-stage build para Node.js: imagen dev con devDependencies vs producción solo con el build',
+          'Configurar healthcheck y observar cómo Compose reintenta si falla'
+        ],
+        code:[{ lang:'dockerfile', label:'Dockerfile multi-stage para Node.js', src:
+`# ── Etapa 1: Construcción (imagen grande con devDependencies) ──
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci                    # instala TODAS las dependencias (incluyendo devDeps)
+
+COPY . .
+RUN npm run build             # compilar TypeScript, bundlear, etc.
+
+# ── Etapa 2: Producción (imagen mínima) ──────────────────────
+FROM node:20-alpine AS prod
+WORKDIR /app
+
+# Solo copiar lo necesario de la etapa anterior
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+RUN npm ci --omit=dev         # solo dependencias de producción
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+USER appuser                  # no correr como root
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD wget -qO- http://localhost:3000/health || exit 1
+
+CMD ["node", "dist/index.js"]`
+        }]
+      }
+    ]}
+  ]
+},
+{
+  id:'b14', label:'BLOQUE 14', title:'Ciberseguridad y Hacking Ético',
+  weeks:'8–10 sem', tipo:'Labs y CTFs',
+  sections:[
+    { title:'Fundamentos de seguridad y criptografía', topics:[
+      { title:'Mentalidad, ética y marco legal', tag:'Fundamentos',
+        items:[
+          'Tríada CIA: Confidentialidad, Integridad, Disponibilidad — las 3 propiedades a proteger',
+          'Principio de mínimo privilegio: solo los permisos estrictamente necesarios',
+          'Defense in depth: capas de protección — si falla una, quedan las demás',
+          'Tipos de actores: script kiddies, hacktivistas, cibercriminales, APT (state-sponsored), insiders',
+          'Fases de un ataque: Reconocimiento → Escaneo → Explotación → Post-explotación → Borrar huellas',
+          'Metodologías: PTES, OWASP Testing Guide, NIST CSF',
+          '<strong>Legalidad</strong>: sin autorización escrita y firmada, es un delito en cualquier jurisdicción',
+          'Responsible disclosure: encontrar → notificar al vendedor → esperar período → publicar',
+          'Bug bounties: programas legales de caza de vulnerabilidades con recompensa',
+          'Plataformas legales: TryHackMe, HackTheBox, PicoCTF, PortSwigger Academy, DVWA, WebGoat'
+        ],
+        practica:[
+          'Crear cuenta en TryHackMe y completar el path "Pre-Security" completo',
+          'Leer y resumir el OWASP Top 10 con ejemplos de vulnerabilidades reales de noticias',
+          'Analizar 3 brechas de seguridad reales (Target 2013, LastPass 2022, SolarWinds) y entender cómo ocurrieron'
+        ],
+        note:'IMPORTANTE: Todas las prácticas de hacking se realizan EXCLUSIVAMENTE en entornos controlados (VMs locales, TryHackMe, HackTheBox). Nunca probar técnicas en sistemas sin autorización escrita explícita.'
+      },
+      { title:'Criptografía aplicada', tag:'Criptografía',
+        items:[
+          'Cifrado simétrico (AES-256-GCM): misma clave cifra y descifra — ultra rápido para datos masivos',
+          'Cifrado asimétrico (RSA/ECC): clave pública cifra, privada descifra — para intercambio de claves',
+          'Hashing: SHA-256, SHA-3 — función unidireccional, para verificar integridad',
+          'Por qué NO usar SHA para contraseñas: GPUs calculan 10 mil millones de SHA-256/segundo',
+          'Hashing de contraseñas: bcrypt, scrypt, Argon2id — diseñados para ser lentos + salt automático',
+          'Rainbow tables: tablas precalculadas de hashes — derrotadas por el salt',
+          'TLS 1.3: Perfect Forward Secrecy con ECDHE — claves efímeras distintas por sesión',
+          'PKCS: estándares de criptografía de clave pública — RSA-OAEP para cifrado, RSA-PSS para firma',
+          'Firma digital: hash del mensaje + cifrado con clave privada — autenticidad e integridad',
+          'Base64: codificación (no cifrado!) — convierte binario a texto ASCII transportable'
+        ],
+        practica:[
+          'Usar CyberChef para practicar: base64, hex, ROT13, URL encoding, SHA-256, AES',
+          'Resolver los primeros 10 retos de CryptoHack (cryptohack.org)',
+          'Comparar tiempos: crackear MD5 simple vs Argon2 con Hashcat en modo benchmark'
+        ],
+        code:[{ lang:'python', label:'Criptografía en Python: hashing correcto de contraseñas', src:
+`import hashlib
+import bcrypt
+import time
+
+contrasena = "MiContraseña2024!"
+contrasena_bytes = contrasena.encode('utf-8')
+
+# ── MAL: SHA-256 para contraseñas ────────────────────────
+t0 = time.perf_counter()
+for _ in range(100_000):
+    hashlib.sha256(contrasena_bytes).hexdigest()
+t_sha = time.perf_counter() - t0
+print(f"SHA-256: 100.000 hashes en {t_sha:.3f}s  ({100_000/t_sha:,.0f}/s)")
+# En una GPU moderna: ~10 BILLONES por segundo → inseguro para contraseñas
+
+# ── BIEN: bcrypt (lento por diseño) ─────────────────────
+t0 = time.perf_counter()
+hashed = bcrypt.hashpw(contrasena_bytes, bcrypt.gensalt(rounds=12))
+t_bcrypt = time.perf_counter() - t0
+print(f"bcrypt (rounds=12): 1 hash en {t_bcrypt:.3f}s")
+# ~0.3 segundos por hash → ataque de fuerza bruta impracticable
+
+# Verificar la contraseña (la única forma correcta)
+es_correcta = bcrypt.checkpw(contrasena_bytes, hashed)
+print(f"Contraseña verificada: {es_correcta}")  # True
+
+# Contraseña incorrecta
+es_incorrecta = bcrypt.checkpw(b"OtraContrasena", hashed)
+print(f"Intento fallido: {es_incorrecta}")        # False
+
+# El hash incluye el salt — cada hash es distinto aunque la contraseña sea igual
+h1 = bcrypt.hashpw(contrasena_bytes, bcrypt.gensalt())
+h2 = bcrypt.hashpw(contrasena_bytes, bcrypt.gensalt())
+print(f"Misma contraseña, distinto hash: {h1 != h2}")  # True`
+        }]
+      }
+    ]},
+    { title:'Hacking de redes y sistemas', topics:[
+      { title:'Reconocimiento, Wireshark y Nmap', tag:'Técnico',
+        items:[
+          'Wireshark: capturar en interfaz, filtros BPF (captura) vs display filters',
+          'Filtros Wireshark esenciales: <code>tcp.port==80</code>, <code>http.request.method=="POST"</code>, <code>ip.addr==x.x.x.x</code>',
+          'Seguir un stream TCP: reconstruir la conversación HTTP completa',
+          'Detectar credenciales en texto plano: FTP, Telnet, HTTP Basic Auth',
+          'Nmap: la herramienta de escaneo de red más importante del pentesting',
+          'Nmap host discovery: <code>-sn</code> ping scan sin escanear puertos',
+          'Nmap SYN scan: <code>-sS</code> stealth — no completa el handshake TCP',
+          'Nmap version detection: <code>-sV</code> — qué servicio y versión en cada puerto',
+          'Nmap scripting: <code>--script vuln</code> ejecuta scripts de vulnerabilidades',
+          'Netcat: <code>nc -lvnp 4444</code> (listener), transferir archivos, shells reversas',
+          'Gobuster/feroxbuster: fuerza bruta de directorios y archivos web ocultos',
+          'theHarvester: emails, subdominios, IPs de fuentes públicas (OSINT)',
+          'Shodan: buscador de dispositivos expuestos en Internet — cámaras, routers, SCADA'
+        ],
+        practica:[
+          'Escanear la red local con nmap y generar informe XML con <code>-oX</code>',
+          'Capturar y analizar con Wireshark una sesión FTP — extraer credenciales en texto plano',
+          'Usar theHarvester sobre un dominio de práctica en scope de bug bounty'
+        ],
+        code:[{ lang:'bash', label:'Nmap: reconocimiento completo de un objetivo', src:
+`# IMPORTANTE: Solo usar en redes y sistemas propios o con autorización escrita
+
+# ── Descubrir hosts activos en la red local ─────────────
+nmap -sn 192.168.1.0/24 -oG hosts_activos.txt
+
+# ── Escaneo básico de puertos ────────────────────────────
+nmap -sS -p 1-1000 192.168.1.100        # SYN scan: puertos 1-1000
+nmap -sS -p- 192.168.1.100              # Todos los 65535 puertos
+nmap -sS --top-ports 100 192.168.1.100  # Los 100 puertos más comunes
+
+# ── Detección de versiones y SO ──────────────────────────
+nmap -sV -O 192.168.1.100               # versiones + OS detection
+nmap -A 192.168.1.100                   # Agresivo: OS + versiones + scripts + traceroute
+
+# ── Nmap Scripting Engine (NSE) ──────────────────────────
+nmap --script vuln 192.168.1.100         # scripts de vulnerabilidades
+nmap --script http-enum 192.168.1.100    # enumerar recursos HTTP
+nmap --script smb-vuln-ms17-010 192.168.1.100  # EternalBlue (SMB)
+
+# ── Guardar resultados ───────────────────────────────────
+nmap -sS -sV -O -A 192.168.1.100 \
+    -oN resultado.txt \                  # formato legible
+    -oX resultado.xml \                  # XML (para tools)
+    -oG resultado.gnmap                  # formato grepable`
+        }]
+      },
+      { title:'OWASP Top 10: vulnerabilidades web', tag:'Web Hacking',
+        items:[
+          '<strong>SQL Injection</strong>: insertar SQL malicioso en campos de entrada — extraer, modificar o borrar datos',
+          'SQLi tipos: error-based, union-based, blind boolean, time-based — cada uno requiere técnica distinta',
+          'Prevención SQLi: prepared statements / parametrized queries — el único remedio real',
+          '<strong>XSS Reflected</strong>: el payload viene en la URL, se ejecuta en quien hace clic al link',
+          '<strong>XSS Stored</strong>: el payload se guarda en la base de datos, ejecuta en todos los visitantes',
+          '<strong>XSS DOM-based</strong>: la vulnerabilidad está en el JavaScript del cliente, no en el servidor',
+          'XSS puede robar: cookies de sesión, tokens CSRF, keylogging, redirección, defacement',
+          'Prevención XSS: escapar output con las funciones del lenguaje, Content Security Policy (CSP)',
+          '<strong>CSRF</strong>: forzar al navegador autenticado de la víctima a enviar peticiones al servidor',
+          '<strong>IDOR</strong>: cambiar el ID en la URL para acceder a recursos de otros usuarios sin autorización',
+          '<strong>Path Traversal</strong>: navegar fuera del directorio permitido para leer archivos del servidor',
+          '<strong>SSRF</strong>: forzar al servidor a hacer peticiones internas (ej: AWS metadata endpoint)',
+          'Burp Suite: proxy intercept, Repeater para reenviar requests modificadas, Intruder para fuzzing'
+        ],
+        practica:[
+          'Completar todos los módulos de DVWA en niveles Low, Medium y High documentando cada bypass',
+          'Resolver todos los labs de SQL Injection de PortSwigger Web Security Academy (gratuitos)',
+          'Escribir informe profesional de pentest: Executive Summary, findings con CVSS, remediaciones'
+        ],
+        code:[{ lang:'python', label:'Demostrar SQLi y la solución correcta (Python + SQLite)', src:
+`import sqlite3
+
+# ── Preparación: crear tabla de ejemplo ──────────────────
+conn = sqlite3.connect(':memory:')
+conn.execute("CREATE TABLE usuarios (id, nombre, password)")
+conn.execute("INSERT INTO usuarios VALUES (1,'admin','secreto123')")
+conn.execute("INSERT INTO usuarios VALUES (2,'usuario','mipass')")
+conn.commit()
+
+# ── VULNERABLE: concatenar input directo en SQL ──────────
+def login_vulnerable(usuario, password):
+    # NUNCA hacer esto en código real
+    query = f"SELECT * FROM usuarios WHERE nombre='{usuario}' AND password='{password}'"
+    print(f"Query ejecutada: {query}")
+    return conn.execute(query).fetchone()
+
+# Ataque: el input malicioso termina la condición con OR 1=1
+entrada_maliciosa = "admin' OR '1'='1"
+resultado = login_vulnerable(entrada_maliciosa, "cualquier_cosa")
+print(f"Login vulnerable: {resultado}")  # admin entra SIN contraseña
+
+# ── SEGURO: prepared statements ──────────────────────────
+def login_seguro(usuario, password):
+    # Los placeholders ? separan el código SQL de los datos
+    query = "SELECT * FROM usuarios WHERE nombre=? AND password=?"
+    return conn.execute(query, (usuario, password)).fetchone()
+
+# El mismo ataque NO funciona con prepared statements
+resultado2 = login_seguro(entrada_maliciosa, "cualquier_cosa")
+print(f"Login seguro: {resultado2}")   # None — el ataque falla
+
+resultado3 = login_seguro("admin", "secreto123")
+print(f"Login legítimo: {resultado3}") # (1, 'admin', 'secreto123')`
+        }]
+      },
+      { title:'Privilege Escalation y Metasploit', tag:'Pentesting',
+        items:[
+          'Metasploit Framework: msfconsole, módulos exploits/auxiliares/payloads/post',
+          'Meterpreter: shell avanzada — sysinfo, getuid, getsystem, hashdump, upload, download',
+          'msfvenom: crear payloads standalone para distintas plataformas y formatos',
+          'Burp Suite Intruder: fuzzing automatizado de parámetros, ataques de diccionario en login',
+          'Hydra: fuerza bruta de servicios de red — SSH, FTP, HTTP, SMB, RDP',
+          'Hashcat: GPU-accelerated cracking — modos de ataque: diccionario, brute force, hybrid',
+          'John the Ripper: cracking de hashes offline con reglas y diccionarios',
+          'Linux PrivEsc: binarios SUID, sudo -l, crons escribibles, PATH hijacking, writable /etc/passwd',
+          'GTFOBins: binarios Unix que permiten escapar restricciones — gtfobins.github.io',
+          'Windows PrivEsc: unquoted service paths, weak service permissions, token impersonation',
+          'LOLBAS: binarios Windows para living-off-the-land — lolbas-project.github.io',
+          'Pivoting: usar la máquina comprometida como salto hacia redes internas',
+          'Persistencia en Linux: crontab, ~/.bashrc, systemd unit, SSH authorized_keys'
+        ],
+        practica:[
+          'TryHackMe "Blue": explotar MS17-010 (EternalBlue) con Metasploit en Windows 7 VM',
+          'Completar una máquina Easy de HackTheBox de principio a fin: recon → exploit → privesc → root.txt',
+          'Participar en PicoCTF: resolver al menos 10 challenges de categorías distintas (crypto, forensics, web, binary)'
+        ]
+      }
+    ]}
+  ]
+}
+];
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+function buildSidebar() {
+  const nav = document.getElementById('sb-nav');
+  BLOQUES.forEach((b, bi) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'sb-bloque';
+    wrap.id = 'sb-b' + bi;
+
+    const hdr = document.createElement('div');
+    hdr.className = 'sb-bloque-hdr';
+    hdr.innerHTML = `<span class="sb-dot dot${bi}"></span>
+      <span class="sb-bloque-title">${b.title}</span>
+      <span class="sb-bloque-num">${b.label}</span>
+      <span class="sb-chevron">›</span>`;
+    hdr.onclick = () => { wrap.classList.toggle('closed'); };
+    wrap.appendChild(hdr);
+
+    const items = document.createElement('div');
+    items.className = 'sb-items';
+
+    b.sections.forEach(sec => {
+      const lbl = document.createElement('div');
+      lbl.className = 'sb-sec-label';
+      lbl.textContent = sec.title;
+      items.appendChild(lbl);
+
+      sec.topics.forEach(t => {
+        const a = document.createElement('a');
+        a.className = 'sb-item';
+        a.textContent = t.title;
+        a.href = '#' + topicId(t.title);
+        a.onclick = (e) => { e.preventDefault(); scrollToTopic(topicId(t.title)); };
+        items.appendChild(a);
+      });
+    });
+
+    wrap.appendChild(items);
+    nav.appendChild(wrap);
+  });
+}
+
+function buildTOC() {
+  const g = document.getElementById('toc');
+  BLOQUES.forEach((b, bi) => {
+    const a = document.createElement('a');
+    a.className = 'toc-item';
+    a.href = '#' + b.id;
+    a.innerHTML = `<span class="toc-num c${bi}">${bi}</span><span class="toc-lbl">${b.title}</span>`;
+    a.onclick = e => { e.preventDefault(); scrollToBloque(b.id); };
+    g.appendChild(a);
+  });
+}
+
+function buildContent() {
+  const root = document.getElementById('content');
+  BLOQUES.forEach((b, bi) => {
+    const bDiv = document.createElement('div');
+    bDiv.className = 'bloque';
+    bDiv.id = b.id;
+
+    bDiv.innerHTML = `<div class="bloque-hdr">
+      <div>
+        <div><span class="bloque-badge bg${bi}">${b.label}</span></div>
+        <h2>${safe(b.title)}</h2>
+        <div class="bloque-meta">
+          <span class="b-tag">⏱ ${safe(b.weeks)}</span>
+          <span class="b-tag">${safe(b.tipo)}</span>
+        </div>
+      </div>
+    </div>`;
+
+    b.sections.forEach(sec => {
+      const sDiv = document.createElement('div');
+      sDiv.className = 'section';
+      sDiv.innerHTML = `<div class="sec-title">${safe(sec.title)}</div>`;
+
+      sec.topics.forEach((t, ti) => {
+        const tc = ['#8b7ff7','#56d4b2','#f47c6e','#6ab8f5','#e07be0','#f5cc45','#82dd95','#f5a348'];
+        const c = tc[(bi * 3 + ti) % tc.length];
+        const tid = topicId(t.title);
+
+        const div = document.createElement('div');
+        div.className = 'topic';
+        div.id = tid;
+
+        const tagsArr = (t.code || []).length > 0 ? ['Teoría','Práctica','Código'] : ['Teoría','Práctica'];
+
+        div.innerHTML = `<div class="topic-hdr">
+          <span class="t-dot" style="background:${c}"></span>
+          <span class="t-title">${safe(t.title)}</span>
+          <span class="t-tag" style="background:${c}22;color:${c}">${safe(t.tag)}</span>
+          <span class="t-chev">›</span>
+        </div>
+        <div class="topic-body">
+          <div class="tabs">${tagsArr.map((l,i)=>`<button class="tab-btn${i===0?' active':''}" data-tab="${i}">${l}</button>`).join('')}</div>
+          <div class="tab-pane active" data-pane="0">
+            <ul class="items-list">${t.items.map(x=>`<li>${safe(x)}</li>`).join('')}</ul>
+            ${t.note ? `<div class="note"><strong>⚠ Nota:</strong> ${safe(t.note)}</div>` : ''}
+          </div>
+          <div class="tab-pane" data-pane="1">
+            ${t.practica ? `<ul class="prac-list">${t.practica.map((p,i)=>`<li class="prac-item"><span class="prac-num">${String(i+1).padStart(2,'0')}</span><span class="prac-text">${safe(p)}</span></li>`).join('')}</ul>` : '<p style="color:var(--txt3);font-size:13px;padding-top:10px">Ver sección de teoría y aplicar los conceptos con proyectos propios.</p>'}
+          </div>
+          ${(t.code||[]).length > 0 ? `<div class="tab-pane" data-pane="2">${(t.code||[]).map(block=>`<div class="code-wrap"><div class="code-label"><span>${safeText(block.label)}</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div><pre><code>${escapeCode(block.src)}</code></pre></div>`).join('')}</div>` : ''}
+        </div>`;
+
+        div.querySelector('.topic-hdr').onclick = () => { div.classList.toggle('open'); };
+
+        div.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.onclick = e => {
+            e.stopPropagation();
+            const idx = btn.dataset.tab;
+            div.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            div.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            div.querySelector(`.tab-pane[data-pane="${idx}"]`).classList.add('active');
+            if (!div.classList.contains('open')) div.classList.add('open');
+          };
+        });
+
+        sDiv.appendChild(div);
+      });
+
+      bDiv.appendChild(sDiv);
+    });
+
+    root.appendChild(bDiv);
+  });
+}
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function topicId(title) {
+  return 'topic-' + title.slice(0, 30).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+}
+
+function escapeCode(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeText(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function scrollToBloque(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (window.innerWidth < 768) toggleSidebar();
+}
+
+function scrollToTopic(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!el.classList.contains('open')) el.classList.add('open');
+  if (window.innerWidth < 768) toggleSidebar();
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sb');
+  const ov = document.getElementById('overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('visible');
+}
+
+function copyCode(btn) {
+  const code = btn.closest('.code-wrap').querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 1800);
+  });
+}
+
+function filterSidebar(q) {
+  const lq = q.toLowerCase();
+  document.querySelectorAll('.sb-item').forEach(el => {
+    const match = !q || el.textContent.toLowerCase().includes(lq);
+    el.style.display = match ? '' : 'none';
+    if (match && q) {
+      el.closest('.sb-bloque').classList.remove('closed');
+    }
+  });
+  document.querySelectorAll('.sb-sec-label').forEach(el => {
+    el.style.display = q ? 'none' : '';
+  });
+}
+
+// ─── INTERSECCIÓN: resaltar elemento activo en sidebar ──────────────────────
+function setupObserver() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        document.querySelectorAll('.sb-item').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-50px 0px -60% 0px' });
+
+  document.querySelectorAll('.topic').forEach(el => observer.observe(el));
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+buildSidebar();
+buildTOC();
+buildContent();
+setupObserver();
+</script>
+</body>
+</html>
